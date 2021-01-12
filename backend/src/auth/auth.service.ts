@@ -20,6 +20,6 @@ export class AuthService {
 	}
 
 	async compareWithPassword(attempt: string, user: User): Promise<boolean> {
-		return await argon2.verify(attempt, user.password);
+		return await argon2.verify(user.password, attempt);
 	}
 }

@@ -3,8 +3,8 @@ import { IsString } from "class-validator";
 import { Column, Entity, OneToMany } from "typeorm";
 import { ObjectType, Field } from "@nestjs/graphql";
 
-import { AbstractModel } from "./abstract-model";
-import { Recipe, RecipeResponse } from "./recipe.model";
+import { AbstractEntity } from "./abstract-model";
+import { RecipeEntity, RecipeResponse } from "./recipe.model";
 
 export enum UserRole {
 	ADMIN = "admin",
@@ -13,7 +13,7 @@ export enum UserRole {
 
 @ObjectType()
 @Entity("user")
-export class User extends AbstractModel {
+export class User extends AbstractEntity {
 	@Field()
 	@Column({ unique: true, length: 254 })
 	email: string;
@@ -34,9 +34,9 @@ export class User extends AbstractModel {
 	})
 	role?: UserRole;
 
-	@Field((type) => [Recipe])
-	@OneToMany(() => Recipe, (recipe: Recipe) => recipe.user)
-	recipes: Recipe[];
+	@Field(() => [RecipeEntity])
+	@OneToMany(() => RecipeEntity, (recipe: RecipeEntity) => recipe.user)
+	recipes: RecipeEntity[];
 
 	toResponseObject(): any {
 		const { id, createdAt, username, recipes, role, email } = this;
@@ -62,7 +62,10 @@ export class Auth {
 	username: string;
 }
 
-export class CreateUserDTO {
+export class UserDTO {
+	@IsString()
+	email?: string;
+
 	@IsString()
 	username: string;
 

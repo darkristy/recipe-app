@@ -38,5 +38,6 @@ module.exports = {
 		"@typescript-eslint/interface-name-prefix": "off",
 		"@typescript-eslint/explicit-module-boundary-types": "off",
 		"@typescript-eslint/camelcase": 0,
+		'indent': 0,
 	},
 };

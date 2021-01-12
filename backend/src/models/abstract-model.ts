@@ -1,3 +1,4 @@
+import { Field, GraphQLISODateTime, Int, ObjectType } from "@nestjs/graphql";
 import {
 	BaseEntity,
 	PrimaryGeneratedColumn,
@@ -5,23 +6,22 @@ import {
 	UpdateDateColumn,
 	DeleteDateColumn,
 } from "typeorm";
-import { Field, ObjectType, Int } from "@nestjs/graphql";
 
 @ObjectType()
-export abstract class AbstractModel extends BaseEntity {
-	@Field((type) => Int)
+export abstract class AbstractEntity extends BaseEntity {
+	@Field(() => Int)
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	@Field((type) => Date)
+	@Field(() => GraphQLISODateTime)
 	@CreateDateColumn()
 	createdAt: Date;
 
-	@Field((type) => Date)
+	@Field(() => GraphQLISODateTime)
 	@UpdateDateColumn()
 	updatedAt: Date;
 
-	@Field((type) => Date)
+	@Field(() => GraphQLISODateTime)
 	@DeleteDateColumn()
 	deletedAt: Date;
 }

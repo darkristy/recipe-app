@@ -17,6 +17,7 @@ import { RecipeModule } from "./recipe/recipe.module";
 
 		GraphQLModule.forRoot({
 			autoSchemaFile: "src/schema.gql",
+			context: ({ request }) => ({ request }),
 		}),
 		ConfigModule.forRoot({ isGlobal: true }),
 		UserModule,

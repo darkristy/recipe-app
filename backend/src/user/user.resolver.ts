@@ -1,7 +1,19 @@
 import { Resolver, Query, Mutation, Args } from "@nestjs/graphql";
+import { UseGuards } from "@nestjs/common";
 
 import { RecipeService } from "../recipe/recipe.service";
-import { CreateUserDTO, User, UserResponse } from "../models/user.model";
+import {
+	UserDTO,
+	User,
+	UserResponse,
+	Auth,
+	UserRole,
+} from "../models/user.model";
+import { JwtAuthGuard } from "../auth/guards/jwt-guard";
+import { RolesGuard } from "../auth/guards/roles.guard";
+import { Roles } from "../auth/decorators/roles.decorator";
+import { CurrentUser } from "../auth/decorators/currentUser";
+import { UserIsUserGuard } from "../auth/guards/userIsUser.guard";
 
 import { UserService } from "./user.service";
 
@@ -13,16 +25,43 @@ export class UserResolver {
 	) {}
 
 	@Query(() => [User])
+	@Roles(UserRole.ADMIN)
+	@UseGuards(JwtAuthGuard, RolesGuard)
 	users(): Promise<UserResponse[]> {
 		return this.userService.showAll();
 	}
 
-	@Mutation((returns) => User)
-	async login(
-		@Args({ name: "email", type: () => String }) username: string,
+	@Query(() => User)
+	@UseGuards(JwtAuthGuard)
+	whoami(@CurrentUser() user: User): Promise<UserResponse> {
+		const { username } = user;
+		return this.userService.findUser(username);
+	}
+
+	@Query(() => User)
+	@UseGuards(JwtAuthGuard)
+	user(
+		@Args({ name: "username", type: () => String }) username: string,
+	): Promise<UserResponse> {
+		return this.userService.findUser(username);
+	}
+
+	@Mutation(() => Auth)
+	login(
+		@Args({ name: "username", type: () => String }) username: string,
 		@Args({ name: "password", type: () => String }) password: string,
-	) {
-		const data: CreateUserDTO = { username, password };
+	): Promise<{ username: string; token: string }> {
+		const data: UserDTO = { username, password };
 		return this.userService.loginUser(data);
+	}
+
+	@Mutation(() => User)
+	register(
+		@Args({ name: "email", type: () => String }) email: string,
+		@Args({ name: "username", type: () => String }) username: string,
+		@Args({ name: "password", type: () => String }) password: string,
+	): Promise<UserResponse> {
+		const data: UserDTO = { email, username, password };
+		return this.userService.registerUser(data);
 	}
 }
