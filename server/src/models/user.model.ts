@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { IsString } from "class-validator";
 import { Column, Entity, OneToMany } from "typeorm";
-import { ObjectType, Field, InputType } from "@nestjs/graphql";
+import { Field, InputType, ObjectType } from "type-graphql";
 
 import { AbstractEntity } from "./abstract-model";
 import { Recipe, RecipeResponse } from "./recipe.model";
@@ -25,6 +25,9 @@ export class User extends AbstractEntity {
 	@Column({ length: 127 })
 	password: string;
 
+	@Column("int", { default: 0 })
+	tokenVersion: number;
+
 	@Field()
 	@Column({
 		type: "enum",
@@ -32,10 +35,13 @@ export class User extends AbstractEntity {
 		nullable: true,
 		default: UserRole.USER,
 	})
-	role?: UserRole;
+	role: UserRole;
 
 	@Field(() => [Recipe])
-	@OneToMany(() => Recipe, (recipe: Recipe) => recipe.user)
+	@OneToMany(
+		() => Recipe,
+		(recipe: Recipe) => recipe.user,
+	)
 	recipes: Recipe[];
 
 	toResponseObject(): any {
@@ -56,10 +62,10 @@ export class User extends AbstractEntity {
 @ObjectType()
 export class Auth {
 	@Field()
-	token: string;
+	accessToken: string;
 
 	@Field()
-	username: string;
+	success: string;
 }
 @InputType()
 export class UserRegisterInput {
@@ -91,8 +97,7 @@ export interface UserResponse {
 	id: number;
 	email: string;
 	username: string;
-	token?: string;
-	role?: string;
+	role: string;
 	createdAt: Date;
 	recipes: RecipeResponse[];
 }

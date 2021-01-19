@@ -15,13 +15,13 @@ const databaseUrl =
 
 const logging = process.env.NODE_ENV === "production" ? false : true;
 
-module.exports = {
+const config = {
 	type: "postgres",
 	url: databaseUrl,
-	entities: [__dirname + "/**/*.entity.{ts,js}"],
+	entities: [__dirname + "/**/*.model.{ts,js}"],
 	synchronize: true,
 	logging: logging,
 	dropSchema: dropSchema,
-	seeds: ["src/database/seeds/**/*{.ts,.js}"],
-	factories: ["src/database/factories/**/*{.ts,.js}"],
 };
+
+export default config;

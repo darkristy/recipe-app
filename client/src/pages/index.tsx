@@ -1,54 +1,31 @@
 import styled from "@emotion/styled";
 import { FunctionComponent } from "react";
-import { gql, useMutation, useQuery } from "urql";
 
-import { clearToken, getToken, saveToken } from "../lib/helpers";
-import { LoginMutation } from "../lib/queries/authQueries";
+import { Mixins } from "../styles/mixins";
 
 const Home: FunctionComponent = () => {
-	const [loginResult, executeLogin] = useMutation(LoginMutation);
-
-	const RecipeQuery = gql`
-		query {
-			userRecipes {
-				ingredients
-			}
-		}
-	`;
-
-	const [result, reexecuteQuery] = useQuery({
-		query: RecipeQuery,
-	});
-
-	console.log(result.data?.userRecipes);
-
-	const submit = async () => {
-		const variables = { username: "darkristy", password: "799791!" };
-		executeLogin(variables);
-
-		const token = loginResult.data?.login.token;
-
-		saveToken(token);
-
-		console.log(getToken());
-	};
-
+	console.log("");
 	return (
 		<>
-			<Button onClick={submit}>
-				<p>login</p>
-			</Button>
-			<Button onClick={clearToken}>
-				<p>logout</p>
-			</Button>
+			<TopSection>
+				<Mixins.Flex center>
+					<Logo />
+				</Mixins.Flex>
+			</TopSection>
 		</>
 	);
 };
 
 export default Home;
 
-const Button = styled.div`
-	background: gray;
-	width: 100px;
-	height: 20px;
+const TopSection = styled.section`
+	background: ${(props): string => props.theme.tiertiary};
+	width: 100%;
+`;
+
+const Logo = styled.div`
+	width: 172px;
+	height: 215px;
+	background: ${(props): string => props.theme.secondary};
+	margin: 20%;
 `;

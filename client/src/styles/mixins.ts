@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 
-const Flex = styled.div<{ spaceBetween: any; flexEnd: any; alignTop: any; noHeight: any }>`
+const Flex = styled.div<{ spaceBetween?: any; flexEnd?: any; alignTop?: any; noHeight?: any; center?: any }>`
 	position: relative;
 	display: flex;
 	align-items: center;
@@ -19,6 +19,11 @@ const Flex = styled.div<{ spaceBetween: any; flexEnd: any; alignTop: any; noHeig
 		props.alignTop &&
 		css`
 			align-items: flex-start;
+		`};
+	${(props): any =>
+		props.center &&
+		css`
+			justify-content: center;
 		`};
 	${(props): any =>
 		props.noHeight &&

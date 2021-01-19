@@ -1,4 +1,4 @@
-import { Field, ObjectType } from "@nestjs/graphql";
+import { Field, ObjectType } from "type-graphql";
 import { Entity, Column, ManyToOne } from "typeorm";
 
 import { AbstractEntity } from "./abstract-model";
@@ -28,7 +28,10 @@ export class Recipe extends AbstractEntity {
 	category: string;
 
 	@Field(() => User)
-	@ManyToOne(() => User, (user: User) => user.id)
+	@ManyToOne(
+		() => User,
+		(user: User) => user.id,
+	)
 	user: User;
 }
 
