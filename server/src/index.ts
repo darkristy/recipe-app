@@ -5,6 +5,7 @@ import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import * as express from "express";
 import * as cookieParser from "cookie-parser";
+import * as cors from "cors";
 
 import { authChecker } from "./auth/authChecker";
 import { UserResolver } from "./resolvers/UserResolver";
@@ -29,6 +30,13 @@ const logging = process.env.NODE_ENV === "production" ? false : true;
 const bootstrap = async (): Promise<void> => {
 	const app = express();
 
+	app.use(
+		cors({
+			origin: "http://localhost:3000",
+			credentials: true,
+		}),
+	);
+
 	app.use(cookieParser());
 	app.post("/refresh_token", async (req, res) => {
 		const token = req.cookies.jid;
@@ -37,8 +45,9 @@ const bootstrap = async (): Promise<void> => {
 			return res.send({ ok: false, accessToken: "" });
 		}
 
-		const payload = await Authentication.validateRefreshToken(
+		const payload = await Authentication.validateToken(
 			token,
+			"refresh",
 		).catch(err => res.send({ ok: false, accessToken: "" }));
 
 		const user = await User.findOne(payload.userId);

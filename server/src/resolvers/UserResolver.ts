@@ -6,6 +6,7 @@ import {
 	Auth,
 	User,
 	UserLoginInput,
+	UserRegisterInput,
 	UserResponse,
 	UserRole,
 } from "../models/user.model";
@@ -46,5 +47,27 @@ export class UserResolver {
 			success: "success",
 			accessToken: Authentication.createAccessToken(user),
 		};
+	}
+
+	@Mutation(() => String)
+	async register(
+		@Arg("registerInput") registerInput: UserRegisterInput,
+	): Promise<{ success: string }> {
+		const { username, password } = registerInput;
+
+		const hashedPassword = await Authentication.hashPassword(password);
+
+		const user = await User.findOne({ where: { username } });
+
+		if (user) {
+			throw new Error("User already exists");
+		}
+
+		await User.insert({
+			...registerInput,
+			password: hashedPassword,
+		});
+
+		return { success: "success" };
 	}
 }

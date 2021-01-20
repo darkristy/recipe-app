@@ -12,8 +12,9 @@ export const authChecker: AuthChecker<MyContext> = async (
 ) => {
 	const authorization = context.req.headers["authorization"];
 
-	const payload = await Authentication.validateRefreshToken(
+	const payload = await Authentication.validateToken(
 		authorization,
+		"access",
 	).catch(err => {
 		throw new AuthenticationError("Not Authenticated");
 	});

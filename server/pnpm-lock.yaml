@@ -5,7 +5,9 @@ dependencies:
   class-transformer: 0.3.2
   class-validator: 0.13.1
   cookie-parser: 1.4.5
+  cors: 2.8.5
   dotenv: 8.2.0
+  express: 4.17.1
   express-jwt: 6.0.0
   graphql: 15.4.0
   jsonwebtoken: 8.5.1
@@ -14,6 +16,7 @@ dependencies:
   type-graphql: 1.1.1_1fbd5b03aabf1837020e73cb1901ef82
   typeorm: 0.2.30
 devDependencies:
+  '@types/cors': 2.8.9
   '@types/express-jwt': 6.0.0
   '@types/jsonwebtoken': 8.5.0
   '@types/node': 14.14.21
@@ -273,6 +276,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-fO3gf3DxU2Trcbr75O7obVndW/X5k8rJNZkLXlQWStTHhP71PkRqjwPIEI0yMnJdg9R9OasjU+Bsr+Hr1xy/0w==
+  /@types/cors/2.8.9:
+    dev: true
+    resolution:
+      integrity: sha512-zurD1ibz21BRlAOIKP8yhrxlqKx6L9VCwkB5kMiP6nZAhoF5MvC7qS1qPA7nRcr1GJolfkQC7/EAL4hdYejLtg==
   /@types/eslint-visitor-keys/1.0.0:
     dev: true
     resolution:
@@ -4805,6 +4812,7 @@ packages:
     resolution:
       integrity: sha512-PQ2PC7R9rslx84ndNBZB/Dkv8V8fZEpk83RLgXtYd0fwUgEjseMn1Dgajh2x6S8QbZAFa9p2qVCEuYZNgve0dQ==
 specifiers:
+  '@types/cors': ^2.8.9
   '@types/express-jwt': ^6.0.0
   '@types/jsonwebtoken': ^8.5.0
   '@types/node': ^14.14.21
@@ -4817,6 +4825,7 @@ specifiers:
   class-transformer: ^0.3.2
   class-validator: ^0.13.1
   cookie-parser: ^1.4.5
+  cors: ^2.8.5
   dotenv: ^8.2.0
   eslint: 5.x
   eslint-config-airbnb: ^18.0.0
@@ -4831,6 +4840,7 @@ specifiers:
   eslint-plugin-react: ^7.14.2
   eslint-plugin-react-hooks: ^2.3.0
   esprima: ^4.0.1
+  express: ^4.17.1
   express-jwt: ^6.0.0
   graphql: ^15.4.0
   jsonwebtoken: ^8.5.1

@@ -28,13 +28,23 @@ export const Authentication = {
 	compareWithPassword: async (attempt: string, user: User): Promise<boolean> =>
 		await argon2.verify(user.password, attempt),
 
-	validateRefreshToken: async (authorization: string): Promise<any> => {
+	validateToken: async (
+		authorization: string,
+		tokenType: "access" | "refresh",
+	): Promise<any> => {
 		if (!authorization) {
 			throw new AuthenticationError("Not Authenticated");
 		}
+		let payload = null;
+		const token = authorization.replace("Bearer ", "");
 
-		const refreshToken = authorization.replace("Bearer ", "");
-		const payload: any = verify(refreshToken, process.env.REFRESH_SECRET);
+		if (tokenType === "access") {
+			payload = verify(token, process.env.ACCESS_SECRET);
+		}
+
+		if (tokenType === "refresh") {
+			payload = verify(token, process.env.REFRESH_SECRET);
+		}
 
 		return payload;
 	},
