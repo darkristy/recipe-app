@@ -11,8 +11,8 @@ const colors = {
 };
 
 const fonts = {
-	primaryFont: "",
-	secondaryFont: "",
+	primaryFont: "Inter, sans-serif",
+	secondaryFont: "Heebo, sans-serif",
 };
 
 export { fonts, colors };

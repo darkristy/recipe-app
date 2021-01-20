@@ -2,8 +2,6 @@
 import { css, Global, withTheme } from "@emotion/react";
 import styled from "@emotion/styled";
 
-import * as pallete from "../utils/variables";
-
 import { media } from "./style-functions";
 
 const makeGlobalStyles = (theme): any => css`
@@ -25,18 +23,37 @@ const makeGlobalStyles = (theme): any => css`
 	ul {
 		list-style: none;
 	}
+
+	h1,
+	h2,
+	h3 {
+		font-family: ${theme.fonts.heading};
+	}
+
+	p {
+		font-family: ${theme.fonts.body};
+	}
+
+	h2 {
+		font-size: 40px;
+	}
+
+	ul {
+		list-style: none;
+	}
+
+	a {
+		text-decoration: none;
+
+		/* &:focus {
+			box-shadow: 0 0 0 1px rgba(256, 256, 256, 0.6);
+		} */
+	}
 `;
+
 // @ts-ignore
 export const GlobalStyles = withTheme(({ theme }) => <Global styles={makeGlobalStyles(theme)} />);
 
-// .grid1 .grid_three_column {
-// 	width: 100%
-// }
-
-// .grid1 .last_column .vc_column-inner .wpb_wrapper {
-// 	display: block
-// }
-
-// .grid1 .last_column  {
-// 	width: 104%
-// }
+export const Container = styled.div`
+	padding: 10%;
+`;

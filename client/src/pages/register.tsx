@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 
-const LoginScreen = () => {
+const RegisterScreen = () => {
 	console.log("logn");
 	return <motion.div exit={{ opacity: 0 }} />;
 };
 
-export default LoginScreen;
+export default RegisterScreen;
