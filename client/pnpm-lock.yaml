@@ -19,6 +19,7 @@ dependencies:
   urql: 1.11.6_graphql@15.4.0+react@17.0.1
   yup: 0.32.8
 devDependencies:
+  '@prisma/cli': 2.15.0
   '@types/js-cookie': 2.2.6
   '@types/node': 14.14.21
   '@types/react': 17.0.0
@@ -613,7 +614,7 @@ packages:
       '@oclif/config': 1.17.0_supports-color@7.2.0
       '@oclif/errors': 1.3.4
       '@oclif/parser': 3.8.5
-      '@oclif/plugin-help': 3.2.1_supports-color@7.2.0
+      '@oclif/plugin-help': 3.2.1
       debug: 4.3.1_supports-color@7.2.0
       semver: 7.3.4
     dev: true
@@ -724,25 +725,6 @@ packages:
       node: '>=8.0.0'
     resolution:
       integrity: sha512-vq7rn16TrQmjX3Al/k1Z5iBZWZ3HE8fDXs52OmDJmmTqryPSNvURH9WCAsqr0PODYCSR17Hy1VTzS0x7vVVLEQ==
-  /@oclif/plugin-help/3.2.1_supports-color@7.2.0:
-    dependencies:
-      '@oclif/command': 1.8.0_supports-color@7.2.0
-      '@oclif/config': 1.17.0_supports-color@7.2.0
-      '@oclif/errors': 1.3.4
-      chalk: 2.4.2
-      indent-string: 4.0.0
-      lodash.template: 4.5.0
-      string-width: 4.2.0
-      strip-ansi: 6.0.0
-      widest-line: 3.1.0
-      wrap-ansi: 4.0.0
-    dev: true
-    engines:
-      node: '>=8.0.0'
-    peerDependencies:
-      supports-color: '*'
-    resolution:
-      integrity: sha512-vq7rn16TrQmjX3Al/k1Z5iBZWZ3HE8fDXs52OmDJmmTqryPSNvURH9WCAsqr0PODYCSR17Hy1VTzS0x7vVVLEQ==
   /@oclif/plugin-not-found/1.2.4:
     dependencies:
       '@oclif/color': 0.1.2
@@ -811,6 +793,21 @@ packages:
       node: '>=8.0.0'
     resolution:
       integrity: sha512-sDOAZcYwynHFTbLo6n8kIbLiVF3a3BLkrmehJUyEbT9F+Smbi47kLGS2gG2g0fjBLR/Lr1InPD7kXL7FaTqEkw==
+  /@prisma/cli/2.15.0:
+    dependencies:
+      '@prisma/engines': 2.15.0-25.e51dc3b5a9ee790a07104bec1c9477d51740fe54
+    dev: true
+    engines:
+      node: '>=10.4'
+    hasBin: true
+    requiresBuild: true
+    resolution:
+      integrity: sha512-sF2mgn5oH5fL9/CKxS0tqojf0rK2BKODlEUqL+2s3YZqvJRSt4iFpiyjgajyd0wyTyv1k9LDHTV0yOD1mXDBsA==
+  /@prisma/engines/2.15.0-25.e51dc3b5a9ee790a07104bec1c9477d51740fe54:
+    dev: true
+    requiresBuild: true
+    resolution:
+      integrity: sha512-AgPxAWtwYhhTNEEsV4lK63HTe9z0GAGL3ofMr2B0TncACmzi9lhdun9TTNie38Oy/3DLfr71TUHKUpV8QjOKUw==
   /@samverschueren/stream-to-observable/0.3.1_rxjs@6.6.3:
     dependencies:
       any-observable: 0.3.0
@@ -8436,6 +8433,7 @@ specifiers:
   '@emotion/server': ^11.0.0
   '@emotion/styled': ^11.0.0
   '@hookform/resolvers': ^1.3.2
+  '@prisma/cli': ^2.15.0
   '@types/js-cookie': ^2.2.6
   '@types/node': ^14.14.20
   '@types/react': ^17.0.0
