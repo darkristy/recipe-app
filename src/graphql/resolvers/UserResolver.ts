@@ -9,6 +9,6 @@ const prisma = new PrismaClient();
 export class UserResolver {
 	@Query(() => User)
 	users() {
-		return "Hello World!";
+		return prisma.user.findMany();
 	}
 }
