@@ -1,9 +1,10 @@
-import { PrismaClient } from "@prisma/client";
 import "dotenv/config";
 import * as argon2 from "argon2";
+import * as cookie from "cookie";
 import { sign, verify } from "jsonwebtoken";
 import { AuthenticationError } from "apollo-server-micro";
-import { Response } from "express";
+import { NextApiResponse } from "next";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -42,35 +43,21 @@ export const Authentication = {
 		return payload;
 	},
 
-	sendRefreshToken: (token: string, res): void => {
-		res.cookie("jid", token, {
-			httpOnly: true,
-			path: "/",
-			sameSite: "strict",
-		});
+	sendRefreshToken: (token: string, res: NextApiResponse): void => {
+		res.setHeader(
+			"Set-Cookie",
+			cookie.serialize("jid", token, {
+				httpOnly: true,
+				secure: process.env.NODE_ENV !== "development",
+				maxAge: 60 * 60,
+				sameSite: "strict",
+				path: "/refresh_token",
+			})
+		);
+		res.statusCode = 200;
 	},
 
-	isAuthenticated: async (req, res) => {
-		const token = req?.cookies.jid;
-		if (!token) {
-			return res.send({ ok: false, accessToken: "" });
-		}
-
-		const payload = await Authentication.validateToken(token, "refresh").catch((err) =>
-			res.send({ ok: false, accessToken: "" })
-		);
-
-		const user = await prisma.user.findUnique({ where: { id: payload.userId } });
-
-		if (!user || user.tokenVersion !== payload.tokenVersion) {
-			return res.send({ ok: false, accessToken: "" });
-		}
-
-		Authentication.sendRefreshToken(Authentication.createRefreshToken(user), res);
-
-		return res.send({
-			ok: false,
-			accessToken: Authentication.createAccessToken(user),
-		});
+	revokeRefreshTokens: async (userId: number): Promise<void> => {
+		await prisma.$executeRaw(`update "User" set tokenVersion = tokenVersion + 1 where id = ${userId}`);
 	},
 };

@@ -6,7 +6,6 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "micro": "micro ../client/server/index.ts",
     "generate:types": "apollo client:codegen --target typescript --endpoint=http://localhost:4000/graphql --outputFlat --includes 'src/**' --excludes 'src/generated' src/generated"
   },
   "dependencies": {

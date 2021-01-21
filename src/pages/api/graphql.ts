@@ -1,6 +1,6 @@
 /* eslint-disable no-shadow */
 import "reflect-metadata";
-import { ApolloServer, gql } from "apollo-server-micro";
+import { ApolloServer } from "apollo-server-micro";
 import { buildSchema } from "type-graphql";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -8,13 +8,12 @@ import withCookies from "../../graphql/helpers/withCookies";
 import { authChecker } from "../../graphql/auth/authChecker";
 import { UserResolver } from "../../graphql/resolvers/UserResolver";
 import { RecipeResolver } from "../../graphql/resolvers/RecipeResolver";
-import { Authentication } from "../../graphql/auth";
 
 let apolloServerHandler: (req: any, res: any) => Promise<void>;
 
-const context = (ctx) => ({ res: ctx.res, req: ctx.req });
+const context = (ctx): any => ({ res: ctx.res, req: ctx.req });
 
-const getApolloServerHandler = async () => {
+const getApolloServerHandler = async (): Promise<(req: any, res: any) => Promise<void>> => {
 	if (!apolloServerHandler) {
 		const schema = await buildSchema({
 			resolvers: [RecipeResolver, UserResolver],
@@ -31,7 +30,7 @@ const getApolloServerHandler = async () => {
 	return apolloServerHandler;
 };
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
 	const apolloServerHandler = await getApolloServerHandler();
 	return apolloServerHandler(req, res);
 };
