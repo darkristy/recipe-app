@@ -1,9 +1,12 @@
 import { AuthChecker } from "type-graphql";
 import { AuthenticationError } from "apollo-server-micro";
+import { PrismaClient } from "@prisma/client";
 
 import { MyContext } from "../interfaces/context.interface";
 
 import { Authentication } from ".";
+
+const prisma = new PrismaClient();
 
 export const authChecker: AuthChecker<MyContext> = async ({ context }, roles) => {
 	const authorization = context.req.headers["authorization"];
@@ -15,7 +18,7 @@ export const authChecker: AuthChecker<MyContext> = async ({ context }, roles) =>
 	context.payload = payload;
 
 	const userId = context.payload.userId;
-	const user = { role: "" };
+	const user = await prisma.user.findUnique({ where: { id: userId }, select: { role: true } });
 
 	if (roles.length === 0) {
 		return user !== undefined;

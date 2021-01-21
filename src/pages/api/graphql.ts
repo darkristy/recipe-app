@@ -5,21 +5,29 @@ import { buildSchema } from "type-graphql";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import withCookies from "../../graphql/helpers/withCookies";
-import { TestResolver } from "../../graphql/resolvers/TestResolver";
 import { authChecker } from "../../graphql/auth/authChecker";
+import { UserResolver } from "../../graphql/resolvers/UserResolver";
+import { RecipeResolver } from "../../graphql/resolvers/RecipeResolver";
+import { Authentication } from "../../graphql/auth";
 
 let apolloServerHandler: (req: any, res: any) => Promise<void>;
+
+const context = (ctx) => ({ res: ctx.res, req: ctx.req });
 
 const getApolloServerHandler = async () => {
 	if (!apolloServerHandler) {
 		const schema = await buildSchema({
-			resolvers: [TestResolver],
+			resolvers: [RecipeResolver, UserResolver],
 			authChecker,
 		});
-		apolloServerHandler = new ApolloServer({ schema, uploads: false, subscriptions: false }).createHandler({
-			path: "/api/graphql",
-		});
+		apolloServerHandler = new ApolloServer({
+			schema,
+			context,
+			uploads: false,
+			subscriptions: false,
+		}).createHandler({ path: "/api/graphql" });
 	}
+
 	return apolloServerHandler;
 };
 
@@ -34,5 +42,4 @@ export const config = {
 	},
 };
 
-// attach cookie helpers to all response
 export default withCookies(handler);

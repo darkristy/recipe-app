@@ -1,14 +1,24 @@
-/* eslint-disable import/no-cycle */
-import "dotenv/config";
 import { IsString } from "class-validator";
-import { Field, InputType, ObjectType } from "type-graphql";
+import { Field, InputType, ObjectType, registerEnumType } from "type-graphql";
 
-import { Recipe, RecipeResponse } from "./recipe.model";
 import { AbstractModel } from "./abstract-model";
 
 export enum UserRole {
 	ADMIN = "admin",
 	USER = "user",
+}
+
+registerEnumType(UserRole, {
+	name: "UserRole",
+});
+
+@ObjectType()
+export class Auth {
+	@Field()
+	accessToken: string;
+
+	@Field()
+	success: string;
 }
 
 @ObjectType()
@@ -23,7 +33,7 @@ export class User extends AbstractModel {
 
 	tokenVersion: number;
 
-	@Field()
+	@Field(() => UserRole, { defaultValue: "user" })
 	role: UserRole;
 
 	@Field(() => [Recipe])
@@ -31,12 +41,27 @@ export class User extends AbstractModel {
 }
 
 @ObjectType()
-export class Auth {
-	@Field()
-	accessToken: string;
+export class Recipe extends AbstractModel {
+	@Field(() => String)
+	name: string;
 
-	@Field()
-	success: string;
+	@Field(() => Boolean, { defaultValue: false })
+	bookmarked: boolean;
+
+	@Field(() => String)
+	imageUrl: string;
+
+	@Field(() => String)
+	ingredients: string;
+
+	@Field(() => String)
+	instructions: string;
+
+	@Field(() => String)
+	category: string;
+
+	@Field(() => User)
+	user: User;
 }
 
 @InputType()
@@ -72,4 +97,13 @@ export interface UserResponse {
 	role: string;
 	createdAt: Date;
 	recipes: [RecipeResponse];
+}
+
+export interface RecipeResponse {
+	name: string;
+	imageUrl: string;
+	ingredients: string;
+	category: string;
+	instructions: string;
+	user: UserResponse;
 }
