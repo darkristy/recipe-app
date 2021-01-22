@@ -7,7 +7,6 @@ import { StoreProvider } from "easy-peasy";
 import { NextPage } from "next";
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-import cookies from "next-cookies";
 
 import { GlobalStyles } from "../styles/globals";
 import store from "../store";
@@ -66,5 +65,5 @@ const MyApp: NextPage = ({ Component, pageProps, jid }: any) => {
 export default MyApp;
 
 MyApp.getInitialProps = (ctx): { jid: string } => ({
-	jid: cookies(ctx).jid || "",
+	jid:  "",
 });

@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
+import { NextApiRequest, NextApiResponse } from "next";
 
 export interface MyContext {
-	req: Request;
-	res: Response;
+	req: NextApiRequest;
+	res: NextApiResponse;
 	payload?: any;
 }

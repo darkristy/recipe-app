@@ -9,11 +9,10 @@ const prisma = new PrismaClient();
 
 @Resolver(User)
 export class UserResolver {
-	@Query((returns) => [User])
-	@Authorized(UserRole.ADMIN)
-	async users(@Ctx() { res }: MyContext) {
-		const users = await prisma.user.findMany();
-
+	@Query(() => [User])
+	@Authorized(UserRole.USER)
+	async users(): Promise<any> {
+		const users = await prisma.user.findMany({ include: { recipes: true } });
 		return users;
 	}
 
