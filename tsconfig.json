@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-	
     "target": "es2017",
 		"lib": [
       "dom",
@@ -12,7 +11,6 @@
     "skipLibCheck": true,
     "strict": false,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
     "esModuleInterop": true,
     "module": "commonjs",
     "moduleResolution": "node",
