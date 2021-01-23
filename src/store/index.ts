@@ -1,6 +1,6 @@
 import { action, createStore } from "easy-peasy";
 
-import { StoreModel } from "../models";
+import { StoreModel } from "./storeModel";
 
 const currentTheme = (): string => {
 	if (typeof window !== "undefined") {
