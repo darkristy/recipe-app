@@ -65,5 +65,5 @@ const MyApp: NextPage = ({ Component, pageProps, jid }: any) => {
 export default MyApp;
 
 MyApp.getInitialProps = (ctx): { jid: string } => ({
-	jid:  "",
+	jid: "",
 });
