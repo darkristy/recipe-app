@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DEV_DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum role {
+  user
+  admin
+}
+
+model user {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  username     String   @unique
+  password     String   @unique
+  role         role     @default(user)
+  tokenVersion Int      @default(0)
+  recipes      recipe[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+  deletedAt    DateTime @default(now())
+}
+
+model recipe {
+  id           Int      @id @default(autoincrement())
+  name         String   @unique
+  imageUrl     String   @unique
+  ingredients  String
+  instructions String
+  bookmarked   Boolean  @default(false)
+  category     category @relation(fields: [categoryId], references: [id])
+  User         user     @relation(fields: [userId], references: [id])
+  userId       Int
+  categoryId   Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+  deletedAt    DateTime @default(now())
+}
+
+model category {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  Recipe    recipe[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  deletedAt DateTime @default(now())
+}
