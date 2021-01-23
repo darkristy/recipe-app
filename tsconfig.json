@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-	
     "target": "es2017",
 		"lib": [
       "dom",
@@ -11,10 +10,9 @@
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
-    "forceConsistentCasingInFileNames": true,
+		"forceConsistentCasingInFileNames": true,
+		"noEmit": true,
 		"esModuleInterop": true,
-		
-		"emitDeclarationOnly": true,
     "module": "commonjs",
     "moduleResolution": "node",
     "resolveJsonModule": true,
@@ -28,7 +26,6 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
-    "incremental": true
   },
   "include": [
     "next-env.d.ts",
