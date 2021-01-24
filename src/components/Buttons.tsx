@@ -9,17 +9,9 @@ interface GeneralButtonProps {
 }
 
 const GeneralButton = ({ label, outline = false }: GeneralButtonProps): JSX.Element => {
-	if (outline) {
-		return (
-			<GeneralButtonStyles.ButtonContainer outline>
-				<Mixins.Flex center>
-					<GeneralButtonStyles.Label>{label}</GeneralButtonStyles.Label>
-				</Mixins.Flex>
-			</GeneralButtonStyles.ButtonContainer>
-		);
-	}
+	const hasOutlne = outline ? true : false;
 	return (
-		<GeneralButtonStyles.ButtonContainer>
+		<GeneralButtonStyles.ButtonContainer outline={hasOutlne}>
 			<Mixins.Flex center>
 				<GeneralButtonStyles.Label>{label}</GeneralButtonStyles.Label>
 			</Mixins.Flex>
