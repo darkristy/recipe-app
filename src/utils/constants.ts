@@ -1,5 +1,5 @@
 const CLIENT_URL =
-	process.env.NODE_ENV === "production" ? "https://recipe-app.darkristy.vercel.app/" : "http://localhost:3000";
+	process.env.NODE_ENV === "production" ? "https://recipe-app.darkristy.vercel.app" : "http://localhost:3000";
 
 const Validation = {
 	email: "Must be a valid email address.",
