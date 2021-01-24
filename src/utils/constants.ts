@@ -1,4 +1,7 @@
-const API_URL = "http://localhost:3000/api/graphql";
+const CLIENT_URL =
+	process.env.NODE_ENV === "production"
+		? "https://recipe-app-git-prisma.darkristy.vercel.app"
+		: "http://localhost:3000";
 
 const Validation = {
 	email: "Must be a valid email address.",
@@ -6,4 +9,4 @@ const Validation = {
 	password: "Must be at least 6 characters",
 };
 
-export { API_URL, Validation };
+export { CLIENT_URL, Validation };

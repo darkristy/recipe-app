@@ -10,7 +10,7 @@ import { setContext } from "@apollo/client/link/context";
 
 import { GlobalStyles } from "../styles/globals";
 import store from "../store";
-import { API_URL } from "../utils/constants";
+import { CLIENT_URL } from "../utils/constants";
 import ThemeWrapper from "../shared/ThemeWrapper";
 
 const MyApp: NextPage = ({ Component, pageProps, jid }: any) => {
@@ -29,7 +29,7 @@ const MyApp: NextPage = ({ Component, pageProps, jid }: any) => {
 	});
 
 	const httpLink = createHttpLink({
-		uri: API_URL,
+		uri: `${CLIENT_URL}/api/graphql`,
 	});
 
 	const client = new ApolloClient({
@@ -65,5 +65,5 @@ const MyApp: NextPage = ({ Component, pageProps, jid }: any) => {
 export default MyApp;
 
 MyApp.getInitialProps = (ctx): { jid: string } => ({
-	jid:  "",
+	jid: "",
 });
