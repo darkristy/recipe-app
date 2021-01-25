@@ -8,17 +8,6 @@ interface GeneralButtonProps {
 	outline?: boolean;
 }
 
-const GeneralButton = ({ label, outline = false }: GeneralButtonProps): JSX.Element => {
-	const hasOutlne = outline ? true : false;
-	return (
-		<GeneralButtonStyles.ButtonContainer outline={hasOutlne}>
-			<Mixins.Flex center>
-				<GeneralButtonStyles.Label>{label}</GeneralButtonStyles.Label>
-			</Mixins.Flex>
-		</GeneralButtonStyles.ButtonContainer>
-	);
-};
-
 const GeneralButtonStyles = {
 	ButtonContainer: styled.div<{ outline?: boolean }>`
 		padding: 13px 0px;
@@ -40,6 +29,17 @@ const GeneralButtonStyles = {
 		font-size: 18px;
 		font-weight: 500;
 	`,
+};
+
+const GeneralButton = ({ label, outline = false }: GeneralButtonProps): JSX.Element => {
+	const hasOutlne = outline ? true : false;
+	return (
+		<GeneralButtonStyles.ButtonContainer outline={hasOutlne}>
+			<Mixins.Flex center>
+				<GeneralButtonStyles.Label>{label}</GeneralButtonStyles.Label>
+			</Mixins.Flex>
+		</GeneralButtonStyles.ButtonContainer>
+	);
 };
 
 export { GeneralButton };

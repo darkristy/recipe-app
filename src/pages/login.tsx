@@ -4,10 +4,13 @@ import { NextPage } from "next";
 import styled from "@emotion/styled";
 import * as yup from "yup";
 import { useFormik } from "formik";
+import { useRouter } from "next/router";
 
 import { LoginUser, LoginUserVariables } from "../generated/LoginUser";
 import Form, { FormInput, FormSubmitButton } from "../components/Form";
-import { LoginMutation } from "../lib/queries/authQueries";
+import { LoginMutation } from "../graphql/queries/authQueries";
+import { setAccessToken } from "../utils/helpers";
+import { withApollo } from "../lib/withApollo";
 
 interface FormInputs {
 	username: string;
@@ -20,18 +23,27 @@ const LoginScreenStyles = {
 };
 
 const LoginScreen: NextPage = () => {
-	const [submitLogin, { data }] = useMutation<LoginUser, LoginUserVariables>(LoginMutation);
+	const [submitLogin] = useMutation<LoginUser, LoginUserVariables>(LoginMutation);
+
+	const router = useRouter();
 
 	const { handleBlur, handleSubmit, handleChange, errors, values, touched } = useFormik({
 		initialValues: {
 			username: "",
 			password: "",
 		},
-		onSubmit: (loginInput: FormInputs): void => {
+		onSubmit: async (loginInput: FormInputs): Promise<void> => {
 			const { username, password } = loginInput;
-			submitLogin({ variables: { username, password } }).catch((err) => {
+			const response = await submitLogin({ variables: { username, password } }).catch((err) => {
 				console.error(err.graphQLErrors);
 			});
+
+			console.log(response);
+
+			if (response && response.data) {
+				setAccessToken(response.data.login.accessToken);
+				router.push("/whoami");
+			}
 		},
 		validationSchema: yup.object().shape({
 			username: yup.string().required(),
@@ -39,9 +51,6 @@ const LoginScreen: NextPage = () => {
 		}),
 	});
 
-	if (data) {
-		console.log(data);
-	}
 	return (
 		<motion.div exit={{ opacity: 0 }}>
 			<LoginScreenStyles.TopSection />
@@ -73,4 +82,4 @@ const LoginScreen: NextPage = () => {
 	);
 };
 
-export default LoginScreen;
+export default withApollo(LoginScreen);

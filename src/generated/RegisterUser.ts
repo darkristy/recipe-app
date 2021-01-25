@@ -4,14 +4,14 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: RegiterUser
+// GraphQL mutation operation: RegisterUser
 // ====================================================
 
-export interface RegiterUser {
+export interface RegisterUser {
   register: string;
 }
 
-export interface RegiterUserVariables {
+export interface RegisterUserVariables {
   email: string;
   username: string;
   password: string;

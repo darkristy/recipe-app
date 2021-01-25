@@ -46,10 +46,7 @@ const FormStyles = {
 	`,
 };
 
-export const FormSubmitButton = ({ name }): JSX.Element => {
-	console.log("hee");
-	return <FormStyles.Button type="submit" value={name} />;
-};
+export const FormSubmitButton = ({ name }): JSX.Element => <FormStyles.Button type="submit" value={name} />;
 
 export const FormInput = ({ type, error, ...args }: FormInputProps): JSX.Element => {
 	const isError = error ? true : false;

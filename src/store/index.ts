@@ -10,9 +10,13 @@ const currentTheme = (): string => {
 
 const store: StoreModel = {
 	currentTheme: currentTheme(),
+	loading: false,
 
 	setCurrentTheme: action((state, payload) => {
 		state.currentTheme = payload;
+	}),
+	setLoading: action((state, payload) => {
+		state.loading = payload;
 	}),
 };
 

@@ -9,10 +9,18 @@ const LoginMutation = gql`
 	}
 `;
 
-const RegiterMutation = gql`
-	mutation RegiterUser($email: String!, $username: String!, $password: String!) {
+const RegisterMutation = gql`
+	mutation RegisterUser($email: String!, $username: String!, $password: String!) {
 		register(registerInput: { email: $email, username: $username, password: $password })
 	}
 `;
 
-export { LoginMutation, RegiterMutation };
+const WhoAmIQuery = gql`
+	query WhoAmI {
+		whoami {
+			id
+		}
+	}
+`;
+
+export { LoginMutation, RegisterMutation, WhoAmIQuery };

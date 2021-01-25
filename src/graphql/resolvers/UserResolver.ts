@@ -1,7 +1,7 @@
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { PrismaClient } from "@prisma/client";
 
-import { Auth, User, UserLoginInput, UserRegisterInput, UserRole } from "../models";
+import { Auth, User, UserLoginInput, UserRegisterInput, UserResponse, UserRole } from "../models";
 import { Authentication } from "../auth";
 import { MyContext } from "../interfaces/context.interface";
 
@@ -10,10 +10,19 @@ const prisma = new PrismaClient();
 @Resolver(User)
 export class UserResolver {
 	@Query(() => [User])
-	@Authorized(UserRole.USER)
+	@Authorized(UserRole.ADMIN)
 	async users(): Promise<any> {
 		const users = await prisma.user.findMany({ include: { recipes: true } });
 		return users;
+	}
+
+	@Query(() => User)
+	@Authorized(UserRole.USER)
+	async whoami(@Ctx() ctx): Promise<any> {
+		const user = ctx.payload;
+		const currentUser = await prisma.user.findUnique({ where: { id: user.userId }, include: { recipes: true } });
+
+		return currentUser;
 	}
 
 	@Mutation(() => String)
