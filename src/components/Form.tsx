@@ -35,7 +35,7 @@ const FormStyles = {
 	Error: styled.p<{ error: boolean }>`
 		height: 38px;
 	`,
-	Button: styled.input<{ outline?: boolean }>`
+	Button: styled.button<{ outline?: boolean }>`
 		padding: 13px 0px;
 		width: 100%;
 		border-radius: 8px;
@@ -46,7 +46,11 @@ const FormStyles = {
 	`,
 };
 
-export const FormSubmitButton = ({ name }): JSX.Element => <FormStyles.Button type="submit" value={name} />;
+export const FormSubmitButton = ({ name }): JSX.Element => (
+	<FormStyles.Button type="submit" value={name}>
+		{name}
+	</FormStyles.Button>
+);
 
 export const FormInput = ({ type, error, ...args }: FormInputProps): JSX.Element => {
 	const isError = error ? true : false;
