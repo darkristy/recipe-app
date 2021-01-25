@@ -19,6 +19,8 @@ export default class MyDocument extends Document {
 					{initialProps.styles}
 					<style data-emotion-css={styles.ids.join(" ")} dangerouslySetInnerHTML={{ __html: styles.css }} />
 
+					<meta name="theme-color" content="#FDFBFB" />
+
 					<link
 						href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500&family=Inter:wght@700&display=swap"
 						rel="stylesheet"
