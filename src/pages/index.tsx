@@ -1,24 +1,46 @@
 import styled from "@emotion/styled";
-import { FunctionComponent } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { NextPage } from "next";
+import React from "react";
 
-import { GeneralButton } from "../components/Buttons";
+import { GeneralButton } from "../shared/Buttons";
 import { Mixins } from "../styles/mixins";
 import { Container } from "../styles/globals";
+import { Sublink } from "../shared/UIElements";
 
-const Home: FunctionComponent = () => (
+const HomeScreenStyles = {
+	TopSection: styled.section`
+		background: ${(props): string => props.theme.tiertiary};
+		width: 100%;
+	`,
+	BottomSection: styled.section``,
+	HomeLinks: styled.div`
+		height: 139px;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		margin: 30px 0;
+	`,
+	Logo: styled.div`
+		width: 172px;
+		height: 215px;
+		background: ${(props): string => props.theme.secondary};
+		margin: 20%;
+	`,
+};
+
+const HomeScreen: NextPage = () => (
 	<motion.div exit={{ opacity: 0 }}>
-		<TopSection>
+		<HomeScreenStyles.TopSection>
 			<Mixins.Flex center>
-				<Logo />
+				<HomeScreenStyles.Logo />
 			</Mixins.Flex>
-		</TopSection>
-
-		<BottomSection>
+		</HomeScreenStyles.TopSection>
+		<HomeScreenStyles.BottomSection>
 			<Container>
-				<HomeHeading>Welcome to Home</HomeHeading>
-				<HomeLinks>
+				<h2>Welcome to Home</h2>
+				<HomeScreenStyles.HomeLinks>
 					<Link href="/register">
 						<a>
 							<GeneralButton label="Signup with Email" />
@@ -29,58 +51,13 @@ const Home: FunctionComponent = () => (
 							<GeneralButton label="Signup with Google" outline />
 						</a>
 					</Link>
-				</HomeLinks>
-				<SubLink>
-					<Mixins.Flex center>
-						<p style={{ fontWeight: 500 }}>
-							Already have an account?{" "}
-							<span>
-								<Link href="/login">
-									<a>Login.</a>
-								</Link>
-							</span>
-						</p>
-					</Mixins.Flex>
-				</SubLink>
+				</HomeScreenStyles.HomeLinks>
+				<Mixins.Flex center>
+					<Sublink href="/login" unlinkedText="Already have an account? " linkedText="Login." />
+				</Mixins.Flex>
 			</Container>
-		</BottomSection>
+		</HomeScreenStyles.BottomSection>
 	</motion.div>
 );
 
-export default Home;
-
-const TopSection = styled.section`
-	background: ${(props): string => props.theme.tiertiary};
-	width: 100%;
-`;
-
-const BottomSection = styled.section``;
-
-const HomeHeading = styled.h2``;
-const HomeLinks = styled.div`
-	height: 139px;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-
-	margin: 30px 0;
-`;
-
-const Logo = styled.div`
-	width: 172px;
-	height: 215px;
-	background: ${(props): string => props.theme.secondary};
-	margin: 20%;
-`;
-
-const SubLink = styled.div`
-	p {
-		font-weight: 500;
-		font-size: 14px;
-		span {
-			a {
-				color: ${(props): string => props.theme.tiertiary};
-			}
-		}
-	}
-`;
+export default HomeScreen;

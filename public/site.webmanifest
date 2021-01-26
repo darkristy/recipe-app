@@ -2,6 +2,7 @@
 	"display": "standalone",
 	"background_color": "#CE4B2E",
 	"name": "Decipe",
+	"theme_color": "#2196F3",
   "icons": [
     {
       "src": "manifest-icon-192.png",

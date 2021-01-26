@@ -35,7 +35,7 @@ const makeGlobalStyles = (theme): any => css`
 	}
 
 	h2 {
-		font-size: 40px;
+		font-size: 38px;
 	}
 
 	ul {
@@ -55,5 +55,5 @@ const makeGlobalStyles = (theme): any => css`
 export const GlobalStyles = withTheme(({ theme }) => <Global styles={makeGlobalStyles(theme)} />);
 
 export const Container = styled.div`
-	padding: 10%;
+	padding: 9%;
 `;

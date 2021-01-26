@@ -20,7 +20,11 @@ export default class MyDocument extends Document {
 					<style data-emotion-css={styles.ids.join(" ")} dangerouslySetInnerHTML={{ __html: styles.css }} />
 
 					<meta name="theme-color" content="#FDFBFB" />
-					<meta name="viewport" content=" initial-scale=1, viewport-fit=cover" />
+					<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+					<meta
+						name="viewport"
+						content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover"
+					/>
 					<link
 						href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500&family=Inter:wght@700&display=swap"
 						rel="stylesheet"

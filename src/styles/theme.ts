@@ -27,6 +27,12 @@ const config = {
 		medium: 600,
 		bold: 700,
 	},
+	spacing: {
+		safeTop: "env(safe-area-inset-top)",
+		safeBottom: "env(safe-area-inset-bottom)",
+		safeLeft: "env(safe-area-inset-left)",
+		safeRight: "env(safe-area-inset-right)",
+	},
 };
 
 const darkTheme = { ...dark, ...config };

@@ -2,9 +2,9 @@ import { NextPage } from "next";
 
 import { withApollo } from "../lib/withApollo";
 
-const FavoritesScreen: NextPage = () => {
+const RecipesScreen: NextPage = () => {
 	console.log();
 	return <div />;
 };
 
-export default withApollo(FavoritesScreen);
+export default withApollo(RecipesScreen);
