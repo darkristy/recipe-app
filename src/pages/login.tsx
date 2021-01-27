@@ -16,6 +16,7 @@ import { setAccessToken } from "../utils/helpers";
 import { withApollo } from "../lib/withApollo";
 import { Wrapper } from "../styles/globals";
 import Button from "../components/Button";
+import { Alert } from "../components/Alert";
 
 interface FormInputs {
 	username: string;
@@ -43,7 +44,7 @@ const LoginScreenStyles = {
 };
 
 const LoginScreen: NextPage = () => {
-	const [submitLogin] = useMutation<LoginUser, LoginUserVariables>(LoginMutation);
+	const [submitLogin, { error }] = useMutation<LoginUser, LoginUserVariables>(LoginMutation);
 
 	const router = useRouter();
 
@@ -54,11 +55,7 @@ const LoginScreen: NextPage = () => {
 		},
 		onSubmit: async (loginInput: FormInputs): Promise<void> => {
 			const { username, password } = loginInput;
-			const response = await submitLogin({ variables: { username, password } }).catch((err) => {
-				console.error(err.graphQLErrors);
-			});
-
-			console.log(response);
+			const response = await submitLogin({ variables: { username, password } }).catch((err) => null);
 
 			if (response && response.data) {
 				setAccessToken(response.data.login.accessToken);
@@ -66,10 +63,16 @@ const LoginScreen: NextPage = () => {
 			}
 		},
 		validationSchema: yup.object().shape({
-			username: yup.string().required(),
-			password: yup.string().required(),
+			username: yup.string(),
+			password: yup.string(),
 		}),
 	});
+
+	let errorMessage;
+
+	if (error) {
+		errorMessage = error?.graphQLErrors.map((err) => err.message);
+	}
 
 	return (
 		<LoginScreenStyles.Container exit={{ opacity: 0 }}>
@@ -111,6 +114,10 @@ const LoginScreen: NextPage = () => {
 							<Sublink href="/register" unlinkedText="Don't have an account? " linkedText="Signup." />
 						</Mixins.Flex>
 					</Form>
+
+					<Mixins.Flex center style={{ paddingTop: 26 }}>
+						{error && <Alert message={errorMessage} severity="error" />}
+					</Mixins.Flex>
 				</Wrapper>
 			</LoginScreenStyles.BottomSection>
 		</LoginScreenStyles.Container>

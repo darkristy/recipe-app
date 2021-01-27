@@ -23,7 +23,7 @@ const RegisterScreenStyles = {
 };
 
 const RegisterScreen: NextPage = () => {
-	const [submitUser, { data }] = useMutation<RegisterUser, RegisterUserVariables>(RegisterMutation);
+	const [submitUser, { data, error }] = useMutation<RegisterUser, RegisterUserVariables>(RegisterMutation);
 
 	const { handleBlur, handleSubmit, handleChange, errors, values, touched } = useFormik({
 		initialValues: {
@@ -50,6 +50,26 @@ const RegisterScreen: NextPage = () => {
 	if (data) {
 		console.log(data);
 	}
+
+	let errorMessage;
+	const inputTouchedAndError = (touched.email && errors.email) || (touched.password && errors.password);
+	const errorIndicator = error || inputTouchedAndError;
+
+	if (error) {
+		errorMessage = error?.graphQLErrors.map((err) => err.message);
+		console.log(errorMessage);
+	}
+
+	if (touched.email && errors.email) {
+		errorMessage = errors.email;
+		console.log(errors.email);
+	}
+
+	if (touched.password && errors.password) {
+		errorMessage = errors.password;
+		console.log(errors.password);
+	}
+
 	return (
 		<motion.div exit={{ opacity: 0 }}>
 			<RegisterScreenStyles.TopSection />
