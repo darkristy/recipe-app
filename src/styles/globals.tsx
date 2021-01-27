@@ -15,6 +15,10 @@ const makeGlobalStyles = (theme): any => css`
 		box-sizing: border-box;
 	}
 
+	#__next {
+		height: 100%;
+	}
+
 	body {
 		background: ${theme.primary};
 		display: block;
@@ -54,6 +58,6 @@ const makeGlobalStyles = (theme): any => css`
 // @ts-ignore
 export const GlobalStyles = withTheme(({ theme }) => <Global styles={makeGlobalStyles(theme)} />);
 
-export const Container = styled.div`
+export const Wrapper = styled.div`
 	padding: 9%;
 `;
