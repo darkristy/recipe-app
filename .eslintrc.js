@@ -25,8 +25,6 @@ module.exports = {
 			'@typescript-eslint/no-var-requires':'off',
 			'indent': 0,
 			"react/destructuring-assignment": 0
-		},
-		
-			
+		},	
   }
   
