@@ -12,8 +12,10 @@ interface FormInputProps {
 }
 
 const FormStyles = {
-	InputContainer: styled.div<{ error: boolean }>`
-		margin-bottom: ${(props): string | number => (props.error ? 0 : `38px`)};
+	InputContainer: styled.div`
+		&:first-child {
+			margin-bottom: 38px;
+		}
 	`,
 	Input: styled.input<{ error: boolean }>`
 		width: 100%;
@@ -46,20 +48,13 @@ const FormStyles = {
 	`,
 };
 
-export const FormSubmitButton = ({ name }): JSX.Element => (
-	<FormStyles.Button type="submit" value={name}>
-		{name}
-	</FormStyles.Button>
-);
-
 export const FormInput = ({ type, error, ...args }: FormInputProps): JSX.Element => {
 	const isError = error ? true : false;
 	const { touched, name } = args;
 
 	return (
-		<FormStyles.InputContainer error={isError}>
+		<FormStyles.InputContainer>
 			<FormStyles.Input type={type} error={isError} placeholder={name} {...args} />
-			{error && touched ? <FormStyles.Error error={isError}>{error}</FormStyles.Error> : null}
 		</FormStyles.InputContainer>
 	);
 };

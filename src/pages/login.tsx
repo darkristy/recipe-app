@@ -10,11 +10,12 @@ import React from "react";
 import { Sublink } from "../shared/UIElements";
 import { Mixins } from "../styles/mixins";
 import { LoginUser, LoginUserVariables } from "../generated/LoginUser";
-import Form, { FormInput, FormSubmitButton } from "../components/Form";
+import Form, { FormInput } from "../components/Form";
 import { LoginMutation } from "../graphql/queries/authQueries";
 import { setAccessToken } from "../utils/helpers";
 import { withApollo } from "../lib/withApollo";
-import { Container } from "../styles/globals";
+import { Wrapper } from "../styles/globals";
+import Button from "../components/Button";
 
 interface FormInputs {
 	username: string;
@@ -22,15 +23,23 @@ interface FormInputs {
 }
 
 const LoginScreenStyles = {
+	Container: styled(motion.div)`
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+	`,
 	TopSection: styled.section`
-		background-color: ${(props) => props.theme.secondary};
+		background-color: ${(props): string => props.theme.secondary};
 		h2 {
 			span {
-				color: ${(props) => props.theme.tiertiary};
+				color: ${(props): string => props.theme.tiertiary};
 			}
 		}
 	`,
-	BottomSection: styled.section``,
+	BottomSection: styled.section`
+		padding-top: 14px;
+		flex: 1;
+	`,
 };
 
 const LoginScreen: NextPage = () => {
@@ -63,16 +72,16 @@ const LoginScreen: NextPage = () => {
 	});
 
 	return (
-		<motion.div exit={{ opacity: 0 }}>
+		<LoginScreenStyles.Container exit={{ opacity: 0 }}>
 			<LoginScreenStyles.TopSection>
-				<Container>
+				<Wrapper>
 					<h2>
 						<span>Feeling Hungry?</span> Login.
 					</h2>
-				</Container>
+				</Wrapper>
 			</LoginScreenStyles.TopSection>
 			<LoginScreenStyles.BottomSection>
-				<Container>
+				<Wrapper>
 					<Form handleSubmit={handleSubmit}>
 						<FormInput
 							type="text"
@@ -93,14 +102,18 @@ const LoginScreen: NextPage = () => {
 							error={errors.password}
 							onBlur={handleBlur}
 						/>
-						<Mixins.Flex flexEnd>
+						<Mixins.Flex flexEnd style={{ paddingTop: 10, paddingBottom: 24 }}>
 							<Sublink href="/login" linkedText="Forgot Password?" />
 						</Mixins.Flex>
-						<FormSubmitButton name="Login" />
+						<Button type="submit" label="Login" size="full" primary />
+
+						<Mixins.Flex center style={{ paddingTop: 26 }}>
+							<Sublink href="/register" unlinkedText="Don't have an account? " linkedText="Signup." />
+						</Mixins.Flex>
 					</Form>
-				</Container>
+				</Wrapper>
 			</LoginScreenStyles.BottomSection>
-		</motion.div>
+		</LoginScreenStyles.Container>
 	);
 };
 

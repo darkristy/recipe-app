@@ -1,12 +1,12 @@
+import React from "react";
 import styled from "@emotion/styled";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { NextPage } from "next";
-import React from "react";
 
-import { GeneralButton } from "../shared/Buttons";
+import Button from "../components/Button";
 import { Mixins } from "../styles/mixins";
-import { Container } from "../styles/globals";
+import { Wrapper } from "../styles/globals";
 import { Sublink } from "../shared/UIElements";
 
 const HomeScreenStyles = {
@@ -38,24 +38,24 @@ const HomeScreen: NextPage = () => (
 			</Mixins.Flex>
 		</HomeScreenStyles.TopSection>
 		<HomeScreenStyles.BottomSection>
-			<Container>
+			<Wrapper>
 				<h2>Welcome to Home</h2>
 				<HomeScreenStyles.HomeLinks>
 					<Link href="/register">
 						<a>
-							<GeneralButton label="Signup with Email" />
+							<Button label="Signup with Email" size="full" primary />
 						</a>
 					</Link>
 					<Link href="/register">
 						<a>
-							<GeneralButton label="Signup with Google" outline />
+							<Button label="Signup with Google" size="full" />
 						</a>
 					</Link>
 				</HomeScreenStyles.HomeLinks>
 				<Mixins.Flex center>
 					<Sublink href="/login" unlinkedText="Already have an account? " linkedText="Login." />
 				</Mixins.Flex>
-			</Container>
+			</Wrapper>
 		</HomeScreenStyles.BottomSection>
 	</motion.div>
 );
