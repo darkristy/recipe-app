@@ -7,8 +7,9 @@ import styled from "@emotion/styled";
 
 import { RegisterMutation } from "../graphql/queries/authQueries";
 import { RegisterUser, RegisterUserVariables } from "../generated/RegisterUser";
-import Form, { FormInput, FormSubmitButton } from "../components/Form";
+import Form, { FormInput } from "../components/Form";
 import { withApollo } from "../lib/withApollo";
+import Button from "../components/Button";
 
 interface FormInputs {
 	email: string;
@@ -83,7 +84,7 @@ const RegisterScreen: NextPage = () => {
 						error={errors.password}
 						onBlur={handleBlur}
 					/>
-					<FormSubmitButton name="Signup" />
+					<Button type="submit" label="Signup" size="full" primary />
 				</Form>
 			</RegisterScreenStyles.BottomSection>
 		</motion.div>
