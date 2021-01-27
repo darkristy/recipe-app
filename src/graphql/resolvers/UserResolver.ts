@@ -1,9 +1,8 @@
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, recipe, user } from "@prisma/client";
 
-import { Auth, User, UserLoginInput, UserRegisterInput, UserResponse, UserRole } from "../models";
+import { AuthLogin, AuthRegister, User, UserLoginInput, UserRegisterInput, UserRole } from "../models";
 import { Authentication } from "../auth";
-import { MyContext } from "../interfaces/context.interface";
 
 const prisma = new PrismaClient();
 
@@ -11,29 +10,39 @@ const prisma = new PrismaClient();
 export class UserResolver {
 	@Query(() => [User])
 	@Authorized(UserRole.ADMIN)
-	async users(): Promise<any> {
+	async users(): Promise<
+		(user & {
+			recipes: recipe[];
+		})[]
+	> {
 		const users = await prisma.user.findMany({ include: { recipes: true } });
 		return users;
 	}
 
 	@Query(() => User)
-	@Authorized(UserRole.USER)
-	async whoami(@Ctx() ctx): Promise<any> {
-		const user = ctx.payload;
-		const currentUser = await prisma.user.findUnique({ where: { id: user.userId }, include: { recipes: true } });
+	@Authorized(UserRole.USER, UserRole.ADMIN)
+	async whoami(
+		@Ctx() ctx
+	): Promise<
+		user & {
+			recipes: recipe[];
+		}
+	> {
+		const payload = ctx.payload;
+		const currentUser = await prisma.user.findUnique({ where: { id: payload.userId }, include: { recipes: true } });
 
 		return currentUser;
 	}
 
-	@Mutation(() => String)
-	async register(@Arg("registerInput") registerInput: UserRegisterInput): Promise<{ success: string }> {
+	@Mutation(() => AuthRegister)
+	async register(@Arg("registerInput") registerInput: UserRegisterInput): Promise<AuthRegister> {
 		const { username, password } = registerInput;
 
 		const hashedPassword = await Authentication.hashPassword(password);
 
-		const user = await prisma.user.findUnique({ where: { username: username } });
+		const possibleUser = await prisma.user.findUnique({ where: { username: username } });
 
-		if (user) {
+		if (possibleUser) {
 			throw new Error("User already exists");
 		}
 
@@ -47,23 +56,19 @@ export class UserResolver {
 		return { success: "success" };
 	}
 
-	@Mutation(() => Auth)
-	async login(@Arg("loginInput") loginInput: UserLoginInput, @Ctx() { res }: MyContext): Promise<Auth> {
+	@Mutation(() => AuthLogin)
+	async login(@Arg("loginInput") loginInput: UserLoginInput): Promise<AuthLogin> {
 		const { username, password } = loginInput;
 
-		const user = await prisma.user.findUnique({ where: { username: username } });
+		const registeredUser = await prisma.user.findUnique({ where: { username: username } });
 
-		if (!user || !(await Authentication.compareWithPassword(password, user))) {
+		if (!registeredUser || !(await Authentication.compareWithPassword(password, registeredUser))) {
 			throw new Error("Invalid username/password");
 		}
 
-		const refreshToken = await Authentication.createRefreshToken(user);
-
-		Authentication.sendRefreshToken(refreshToken, res);
-
 		return {
 			success: "success",
-			accessToken: Authentication.createAccessToken(user),
+			accessToken: Authentication.createAccessToken(registeredUser),
 		};
 	}
 }

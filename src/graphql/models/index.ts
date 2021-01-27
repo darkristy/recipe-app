@@ -13,12 +13,27 @@ registerEnumType(UserRole, {
 });
 
 @ObjectType()
-export class Auth {
+export class AuthLogin {
 	@Field()
 	accessToken: string;
 
 	@Field()
 	success: string;
+}
+
+@ObjectType()
+export class AuthRegister {
+	@Field()
+	success?: string;
+}
+
+@ObjectType()
+export class Category extends AbstractModel {
+	@Field(() => String)
+	name: string;
+
+	@Field(() => [Recipe])
+	recipes?: [Recipe];
 }
 
 @ObjectType()
@@ -57,8 +72,8 @@ export class Recipe extends AbstractModel {
 	@Field(() => String)
 	instructions: string;
 
-	@Field(() => String)
-	category: string;
+	@Field(() => Category)
+	category: Category;
 
 	@Field(() => User)
 	user: User;
@@ -88,22 +103,4 @@ export class UserLoginInput {
 	@Field()
 	@IsString()
 	password: string;
-}
-
-export interface UserResponse {
-	id: number;
-	email: string;
-	username: string;
-	role: string;
-	createdAt: Date;
-	recipes: [RecipeResponse];
-}
-
-export interface RecipeResponse {
-	name: string;
-	imageUrl: string;
-	ingredients: string;
-	category: string;
-	instructions: string;
-	user: UserResponse;
 }
