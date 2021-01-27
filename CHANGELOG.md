@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.3](https://github.com/darkristy/recipe-app/compare/v0.1.2...v0.1.3) (2021-01-27)
+
+
+### Features
+
+* add alert component ([bc1544c](https://github.com/darkristy/recipe-app/commit/bc1544cc98d4b8625ad14ea26ad32a5f74d0e475))
+* implemented alert component ([57407a4](https://github.com/darkristy/recipe-app/commit/57407a41da0a7a1b5295ab101f2ceea03e6282c0))
+
 ### [0.1.2](https://github.com/darkristy/recipe-app/compare/v0.1.1...v0.1.2) (2021-01-27)
 
 
