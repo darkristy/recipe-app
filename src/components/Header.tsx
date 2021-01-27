@@ -1,3 +1,5 @@
+const HeaderStyles = {};
+
 const Header = (): JSX.Element => {
 	console.log();
 	return <div />;

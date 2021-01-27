@@ -1,3 +1,5 @@
+const CategoryListStyles = {};
+
 const CategoryList = () => {
 	console.log();
 	return <div />;
