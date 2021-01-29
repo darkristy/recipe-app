@@ -8,7 +8,7 @@
 // ====================================================
 
 export interface LoginUser_login {
-  __typename: "Auth";
+  __typename: "AuthLogin";
   success: string;
   accessToken: string;
 }

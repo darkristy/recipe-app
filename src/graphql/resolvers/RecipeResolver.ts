@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/ban-ts-ignore */
 /* eslint-disable no-shadow */
-import { Authorized, Ctx, Query, Resolver } from "type-graphql";
+
+import { Arg, Authorized, Ctx, Query, Resolver } from "type-graphql";
 import { category, PrismaClient, recipe } from "@prisma/client";
 
 import { Category, Recipe, UserRole } from "../models";
@@ -19,7 +21,11 @@ export class RecipeResolver {
 	@Authorized()
 	async userRecipes(@Ctx() ctx): Promise<recipe[]> {
 		const user = ctx.payload;
-		const currentUser = await prisma.user.findUnique({ where: { id: user.userId }, include: { recipes: true } });
+		const currentUser = await prisma.user.findUnique({
+			where: { id: user.userId },
+			// @ts-ignore
+			include: { recipes: { include: { category } } },
+		});
 
 		return currentUser.recipes;
 	}
@@ -43,5 +49,13 @@ export class RecipeResolver {
 		}
 
 		return [...new Set(categories)];
+	}
+
+	@Query(() => Recipe)
+	@Authorized()
+	async getRecipeById(@Arg("recipeId") recipeId: number): Promise<recipe> {
+		const possibleRecipe = await prisma.recipe.findUnique({ where: { id: recipeId }, include: { category: true } });
+
+		return possibleRecipe;
 	}
 }

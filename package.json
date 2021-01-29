@@ -8,7 +8,7 @@
     "start": "next start",
     "seed": "ts-node prisma/seed.ts",
     "generate:types": "apollo client:codegen --target typescript --endpoint=http://localhost:3000/api/graphql --outputFlat --includes 'src/**' --excludes 'src/generated' src/generated",
-    "storybook": "start-storybook -p 6006",
+    "storybook": "start-storybook -s ./public -p 6006",
     "build-storybook": "build-storybook",
     "release": "standard-version"
   },

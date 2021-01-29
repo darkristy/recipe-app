@@ -11,7 +11,9 @@ const LoginMutation = gql`
 
 const RegisterMutation = gql`
 	mutation RegisterUser($email: String!, $username: String!, $password: String!) {
-		register(registerInput: { email: $email, username: $username, password: $password })
+		register(registerInput: { email: $email, username: $username, password: $password }) {
+			success
+		}
 	}
 `;
 

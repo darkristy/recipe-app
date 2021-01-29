@@ -128,11 +128,13 @@ export function withApollo(
 
 			// Extract query data from the Apollo store
 			const apolloState = apolloClient.cache.extract();
+			const { id } = ctx.query;
 
 			return {
 				...pageProps,
 				apolloState,
 				serverAccessToken,
+				id,
 			};
 		};
 	}

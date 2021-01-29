@@ -7,8 +7,13 @@
 // GraphQL mutation operation: RegisterUser
 // ====================================================
 
+export interface RegisterUser_register {
+  __typename: "AuthRegister";
+  success: string;
+}
+
 export interface RegisterUser {
-  register: string;
+  register: RegisterUser_register;
 }
 
 export interface RegisterUserVariables {

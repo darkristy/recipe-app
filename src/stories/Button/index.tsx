@@ -1,4 +1,4 @@
-import { css } from "@emotion/react";
+import { css, SerializedStyles } from "@emotion/react";
 import styled from "@emotion/styled";
 import React from "react";
 
@@ -15,9 +15,9 @@ export interface ButtonProps {
 
 const ButtonStyles = {
 	ButtonContainer: styled.button<{ primary: boolean; secondary: boolean; width: any; borderColor: string }>`
-		width: ${(props): any => props.width};
+		width: ${(props): string => props.width};
 		border-radius: 8px;
-		${(props): any =>
+		${(props): SerializedStyles =>
 			props.primary &&
 			css`
 				padding: 13px 0px;
@@ -31,7 +31,7 @@ const ButtonStyles = {
 					margin-block-end: 0;
 				}
 			`};
-		${(props): any =>
+		${(props): SerializedStyles =>
 			props.secondary &&
 			css`
 				background: none;

@@ -1,7 +1,15 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 
-const Flex = styled.div<{ spaceBetween?: any; flexEnd?: any; alignTop?: any; noHeight?: any; center?: any }>`
+interface FlexProps {
+	spaceBetween?: any;
+	flexEnd?: any;
+	alignTop?: any;
+	noHeight?: any;
+	center?: any;
+}
+
+const Flex = styled.div<FlexProps>`
 	position: relative;
 	display: flex;
 	align-items: center;

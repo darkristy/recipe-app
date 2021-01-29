@@ -59,7 +59,7 @@ const LoginScreen: NextPage = () => {
 
 			if (response && response.data) {
 				setAccessToken(response.data.login.accessToken);
-				router.push("/whoami");
+				router.push("/recipes");
 			}
 		},
 		validationSchema: yup.object().shape({

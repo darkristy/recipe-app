@@ -36,6 +36,8 @@ const makeGlobalStyles = (theme): any => css`
 
 	p {
 		font-family: ${theme.fonts.body};
+		font-size: 19px;
+		white-space: pre-line;
 	}
 
 	h2 {

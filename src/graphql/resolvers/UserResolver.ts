@@ -57,7 +57,7 @@ export class UserResolver {
 	}
 
 	@Mutation(() => AuthLogin)
-	async login(@Arg("loginInput") loginInput: UserLoginInput): Promise<AuthLogin> {
+	async login(@Arg("loginInput") loginInput: UserLoginInput, @Ctx() ctx): Promise<AuthLogin> {
 		const { username, password } = loginInput;
 
 		const registeredUser = await prisma.user.findUnique({ where: { username: username } });
@@ -65,6 +65,8 @@ export class UserResolver {
 		if (!registeredUser || !(await Authentication.compareWithPassword(password, registeredUser))) {
 			throw new Error("Invalid username/password");
 		}
+
+		Authentication.sendRefreshToken(Authentication.createRefreshToken(registeredUser), ctx.res);
 
 		return {
 			success: "success",
