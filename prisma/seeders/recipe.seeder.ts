@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 
-import data from "../seedData";
+import data from "../seed-data";
 
 export const recipeSeeder = async (prisma: PrismaClient): Promise<void> => {
 	const recipes = data.recipes;

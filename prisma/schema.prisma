@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("DEV_DATABASE_URL")
 }
 
 generator client {
@@ -16,39 +16,94 @@ enum role {
 }
 
 model user {
-  id           Int      @id @default(autoincrement())
-  email        String   @unique
-  username     String   @unique
-  password     String   @unique
-  role         role     @default(user)
-  tokenVersion Int      @default(0)
-  recipes      recipe[]
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @default(now())
-  deletedAt    DateTime @default(now())
+  id            String   @id @default(uuid())
+  email         String   @unique
+  username      String   @unique
+  password      String   @unique
+  token_version Int      @default(0)
+  role          role     @default(user)
+  recipes       recipe[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now())
+  deletedAt     DateTime @default(now())
 }
 
-model recipe {
-  id           Int      @id @default(autoincrement())
-  name         String   @unique
-  imageUrl     String   @unique
-  ingredients  String
-  instructions String
-  bookmarked   Boolean  @default(false)
-  category     category @relation(fields: [categoryId], references: [id])
-  User         user     @relation(fields: [userId], references: [id])
-  userId       Int
-  categoryId   Int
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @default(now())
-  deletedAt    DateTime @default(now())
+model ingredient {
+  id               Int                @id @default(autoincrement())
+  name             String             @unique
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @default(now())
+  deletedAt        DateTime           @default(now())
+  recipeIngredient recipeIngredient[]
 }
 
-model category {
+model measurmentUnit {
+  id               Int                @id @default(autoincrement())
+  name             String             @unique
+  recipeIngredient recipeIngredient[]
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @default(now())
+  deletedAt        DateTime           @default(now())
+}
+
+model measurmentQty {
+  id               Int                @id @default(autoincrement())
+  amount           String
+  recipeIngredient recipeIngredient[]
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @default(now())
+  deletedAt        DateTime           @default(now())
+}
+
+model recipeIngredient {
+  id               Int            @id @default(autoincrement())
+  recipe           recipe         @relation(fields: [recipeId], references: [id])
+  ingredient       ingredient     @relation(fields: [ingredientId], references: [id])
+  measurmentQty    measurmentQty  @relation(fields: [measurmentQtyId], references: [id])
+  measurmentUnit   measurmentUnit @relation(fields: [measurmentUnitId], references: [id])
+  recipeId         Int
+  ingredientId     Int
+  measurmentQtyId  Int
+  measurmentUnitId Int
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @default(now())
+  deletedAt        DateTime       @default(now())
+
+}
+
+model instruction {
+  id          Int      @id @default(autoincrement())
+  description String
+  recipe      recipe   @relation(fields: [recipeId], references: [id])
+  recipeId    Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+  deletedAt   DateTime @default(now())
+}
+
+model cuisine {
   id        Int      @id @default(autoincrement())
   name      String   @unique
-  Recipe    recipe[]
+  recipes   recipe[]
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
   deletedAt DateTime @default(now())
+}
+
+model recipe {
+  id           Int                @id @default(autoincrement())
+  name         String             @unique
+  image_url    String             @unique
+  bookmarked   Boolean            @default(false)
+  cookTime     DateTime
+  prepTime     DateTime
+  ingredients  recipeIngredient[]
+  instructions instruction[]
+  cuisine      cuisine            @relation(fields: [cuisineId], references: [id])
+  user         user               @relation(fields: [userId], references: [id])
+  userId       String
+  cuisineId    Int
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @default(now())
+  deletedAt    DateTime           @default(now())
 }
