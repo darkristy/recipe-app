@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.4](https://github.com/darkristy/recipe-app/compare/v0.1.3...v0.1.4) (2021-02-06)
+
+
+### Features
+
+* app bar int ([fefc766](https://github.com/darkristy/recipe-app/commit/fefc766e59ef47247a70a082c44430b621698c12))
+
 ### [0.1.3](https://github.com/darkristy/recipe-app/compare/v0.1.2...v0.1.3) (2021-01-27)
 
 
