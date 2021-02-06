@@ -9,7 +9,7 @@
 
 export interface WhoAmI_whoami {
   __typename: "User";
-  id: number;
+  id: string;
 }
 
 export interface WhoAmI {

@@ -56,7 +56,7 @@ export const Authentication = {
 		res.statusCode = 200;
 	},
 
-	revokeRefreshTokens: async (userId: number): Promise<void> => {
+	revokeRefreshTokens: async (userId: string): Promise<void> => {
 		await prisma.$executeRaw(`update "User" set tokenVersion = tokenVersion + 1 where id = ${userId}`);
 	},
 };

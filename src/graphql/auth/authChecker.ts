@@ -18,6 +18,7 @@ export const authChecker: AuthChecker<MyContext> = async ({ context }, roles) =>
 	context.payload = payload;
 
 	const userId = context.payload.userId;
+
 	const user = await prisma.user.findUnique({ where: { id: userId }, select: { role: true } });
 
 	if (roles.length === 0) {
