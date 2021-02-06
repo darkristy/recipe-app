@@ -4,14 +4,14 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: UserRecipeCategories
+// GraphQL query operation: UserRecipeCuisines
 // ====================================================
 
-export interface UserRecipeCategories_userRecipeCategories {
-  __typename: "Category";
+export interface UserRecipeCuisines_userRecipeCuisines {
+  __typename: "Cuisine";
   name: string;
 }
 
-export interface UserRecipeCategories {
-  userRecipeCategories: UserRecipeCategories_userRecipeCategories[];
+export interface UserRecipeCuisines {
+  userRecipeCuisines: UserRecipeCuisines_userRecipeCuisines[];
 }

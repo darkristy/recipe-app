@@ -2,9 +2,9 @@
 /* eslint-disable no-shadow */
 
 import { Arg, Authorized, Ctx, Query, Resolver } from "type-graphql";
-import { category, PrismaClient, recipe } from "@prisma/client";
+import { cuisine, PrismaClient, recipe } from "@prisma/client";
 
-import { Category, Recipe, UserRole } from "../models";
+import { Cuisine, Recipe, UserRole } from "../models";
 
 const prisma = new PrismaClient();
 
@@ -24,37 +24,37 @@ export class RecipeResolver {
 		const currentUser = await prisma.user.findUnique({
 			where: { id: user.userId },
 			// @ts-ignore
-			include: { recipes: { include: { category } } },
+			include: { recipes: { include: { cuisine } } },
 		});
 
 		return currentUser.recipes;
 	}
 
-	@Query(() => [Category])
+	@Query(() => [Cuisine])
 	@Authorized()
-	async userRecipeCategories(@Ctx() ctx): Promise<category[]> {
-		const categories = [];
+	async userRecipeCuisines(@Ctx() ctx): Promise<cuisine[]> {
+		const cuisines = [];
 		const user = ctx.payload;
 		const currentUser = await prisma.user.findUnique({ where: { id: user.userId }, include: { recipes: true } });
 
 		const recipes = currentUser.recipes;
 
 		for (const recipe of recipes) {
-			const category = await prisma.category.findUnique({
+			const cuisine = await prisma.cuisine.findUnique({
 				where: {
-					id: recipe.categoryId,
+					id: recipe.cuisineId,
 				},
 			});
-			categories.push(category);
+			cuisines.push(cuisine);
 		}
 
-		return [...new Set(categories)];
+		return [...new Set(cuisines)];
 	}
 
 	@Query(() => Recipe)
 	@Authorized()
 	async getRecipeById(@Arg("recipeId") recipeId: number): Promise<recipe> {
-		const possibleRecipe = await prisma.recipe.findUnique({ where: { id: recipeId }, include: { category: true } });
+		const possibleRecipe = await prisma.recipe.findUnique({ where: { id: recipeId }, include: { cuisine: true } });
 
 		return possibleRecipe;
 	}
