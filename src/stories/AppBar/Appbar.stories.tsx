@@ -11,8 +11,5 @@ export default {
 
 const Template: Story<AppBarProps> = (args) => <AppBar {...args} />;
 
-export const Primary = Template.bind({});
-Primary.args = {
-	primary: true,
-	label: "AppBar",
-};
+export const Standard = Template.bind({});
+Standard.args = {};
