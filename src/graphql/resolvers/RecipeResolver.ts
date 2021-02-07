@@ -2,9 +2,9 @@
 /* eslint-disable no-shadow */
 
 import { Arg, Authorized, Ctx, Query, Resolver } from "type-graphql";
-import { cuisine, PrismaClient, recipe } from "@prisma/client";
+import { cuisine, ingredient, measurmentUnit, PrismaClient, recipe } from "@prisma/client";
 
-import { Cuisine, Recipe, UserRole } from "../models";
+import { Cuisine, Ingredient, MeasurmentUnit, Recipe, UserRole } from "../models";
 
 const prisma = new PrismaClient();
 
@@ -15,6 +15,27 @@ export class RecipeResolver {
 	async recipes(): Promise<recipe[]> {
 		const recipes = await prisma.recipe.findMany();
 		return recipes;
+	}
+
+	@Query(() => [Cuisine])
+	@Authorized()
+	async cuisines(): Promise<cuisine[]> {
+		const cuisines = await prisma.cuisine.findMany();
+		return cuisines;
+	}
+
+	@Query(() => [MeasurmentUnit])
+	@Authorized()
+	async measurmentUnits(): Promise<measurmentUnit[]> {
+		const measurmentUnits = await prisma.measurmentUnit.findMany();
+		return measurmentUnits;
+	}
+
+	@Query(() => [Ingredient])
+	@Authorized()
+	async ingredients(): Promise<ingredient[]> {
+		const ingredients = await prisma.ingredient.findMany();
+		return ingredients;
 	}
 
 	@Query(() => [Recipe])

@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 
 import { CLIENT_URL } from "../utils/constants";
 import { getAccessToken, setAccessToken } from "../utils/helpers";
+import AppBar from "../components/AppBar";
 
 const isServer = (): boolean => typeof window === "undefined";
 
@@ -14,16 +15,21 @@ export function withAuth(
 	displayName: string;
 	getInitialProps(ctx: any): Promise<any>;
 } {
-	const WithAuth = ({ serverAccessToken, ...pageProps }: any): JSX.Element => {
+	const WithAuth = ({ serverAccessToken, path, ...pageProps }: any): JSX.Element => {
 		if (!isServer() && !getAccessToken()) {
 			setAccessToken(serverAccessToken);
 		}
 
 		const queryClient = new QueryClient();
 
+		const whiteListedRoutes = /^(\/recipes|\/home|\/bookmarks|\/new-recipe|\/profile)$/;
+
+		const isDisabled = path.match(whiteListedRoutes) ? false : true;
+
 		return (
 			<QueryClientProvider client={queryClient}>
 				<PageComponent {...pageProps} />
+				<AppBar disabled={isDisabled} />
 			</QueryClientProvider>
 		);
 	};
@@ -68,10 +74,13 @@ export function withAuth(
 
 			const { id } = ctx.query;
 
+			const path = ctx.pathname;
+
 			return {
 				...pageProps,
 				token: serverAccessToken,
 				id,
+				path,
 			};
 		};
 	}

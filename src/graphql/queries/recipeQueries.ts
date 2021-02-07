@@ -23,6 +23,30 @@ const UserRecipesQuery = gql`
 	}
 `;
 
+const AllCuisinesQuery = gql`
+	query AllCuisines {
+		cuisines {
+			name
+		}
+	}
+`;
+
+const AllIngredientsQuery = gql`
+	query AllIngredients {
+		ingredients {
+			name
+		}
+	}
+`;
+
+const AllUnitsQuery = gql`
+	query AllUnits {
+		measurmentUnits {
+			name
+		}
+	}
+`;
+
 const UserRecipeCuisinesQuery = gql`
 	query UserRecipeCuisines {
 		userRecipeCuisines {
@@ -54,4 +78,11 @@ const GetRecipeByIdQuery = gql`
 	}
 `;
 
-export { UserRecipeCuisinesQuery, UserRecipesQuery, GetRecipeByIdQuery };
+export {
+	UserRecipeCuisinesQuery,
+	UserRecipesQuery,
+	GetRecipeByIdQuery,
+	AllUnitsQuery,
+	AllIngredientsQuery,
+	AllCuisinesQuery,
+};
