@@ -5,7 +5,6 @@ import styled from "@emotion/styled";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
-import React from "react";
 
 import { Sublink } from "../shared/UIElements";
 import { Mixins } from "../styles/mixins";
@@ -16,7 +15,7 @@ import { setAccessToken } from "../utils/helpers";
 import { withApollo } from "../lib/withApollo";
 import { Wrapper } from "../styles/globals";
 import Button from "../components/Button";
-import { Alert } from "../components/Alert";
+import Alert from "../components/Alert";
 
 interface FormInputs {
 	username: string;
@@ -59,7 +58,7 @@ const LoginScreen: NextPage = () => {
 
 			if (response && response.data) {
 				setAccessToken(response.data.login.accessToken);
-				router.push("/recipes");
+				router.push("/home");
 			}
 		},
 		validationSchema: yup.object().shape({
