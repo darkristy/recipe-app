@@ -13,7 +13,7 @@ const prisma = new PrismaClient();
 const seed =
 	process.env.NODE_ENV !== "production"
 		? [
-				cuisineSeeder(prisma),
+				// cuisineSeeder(prisma),
 				ingredientSeeder(prisma),
 				measurmentUnitSeeder(prisma),
 				// measurmentQtySeeder(prisma),
