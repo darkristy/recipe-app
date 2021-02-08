@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 import { NextPage } from "next";
 
-import { withAuth } from "../lib/withAuth";
+import { withApollo } from "../lib/withApollo";
 
 const ProfileScreenStyles = {
 	Container: styled(motion.div)``,
@@ -13,4 +13,4 @@ const ProfileScreen: NextPage = () => {
 	return <ProfileScreenStyles.Container exit={{ opacity: 0 }}>Profile</ProfileScreenStyles.Container>;
 };
 
-export default withAuth(ProfileScreen);
+export default withApollo(ProfileScreen);

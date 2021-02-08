@@ -1,15 +1,14 @@
 import { NextPage } from "next";
 import React from "react";
-// import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import styled from "@emotion/styled";
 
+import { UserRecipesQuery } from "../graphql/queries/recipeQueries";
 import { Wrapper } from "../styles/globals";
 import Card from "../components/Card";
 import { withApollo } from "../lib/withApollo";
-import { withAuth } from "../lib/withAuth";
-import { useUserRecipes } from "../hooks/useUserRecipes";
 
 interface RecipesScreenProps {
 	token: string;
@@ -23,8 +22,10 @@ const RecipesScreenStyles = {
 	`,
 };
 
-const RecipesScreen: NextPage<RecipesScreenProps> = ({ token }) => {
-	const { data } = useUserRecipes(token);
+const RecipesScreen: NextPage<RecipesScreenProps> = () => {
+	const { data } = useQuery(UserRecipesQuery);
+
+	console.log(data);
 
 	return (
 		<motion.div exit={{ opacity: 0 }}>
@@ -52,4 +53,4 @@ const RecipesScreen: NextPage<RecipesScreenProps> = ({ token }) => {
 	);
 };
 
-export default withAuth(RecipesScreen);
+export default withApollo(RecipesScreen);
