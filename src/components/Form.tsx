@@ -1,5 +1,7 @@
-import { css } from "@emotion/react";
 import styled from "@emotion/styled";
+import Select from "react-select";
+import CreatableSelect from "react-select/creatable";
+import { useState } from "react";
 
 interface FormInputProps {
 	type: string;
@@ -9,6 +11,15 @@ interface FormInputProps {
 	touched: any;
 	onChange: any;
 	onBlur: any;
+}
+
+interface FormSelectProps {
+	creatable?: boolean;
+	id: string;
+	defaultOptions: any;
+	value: any;
+	setFieldValue: any;
+	handleBlur: any;
 }
 
 const FormStyles = {
@@ -48,6 +59,74 @@ const FormStyles = {
 	`,
 };
 
+export const FormSelect: React.FC<FormSelectProps> = ({
+	id,
+	creatable,
+	defaultOptions,
+	handleBlur,
+	value,
+	setFieldValue,
+}) => {
+	const [loading, setLoading] = useState(false);
+	const [options, setOptions] = useState([]);
+
+	const optionList = [];
+
+	if (defaultOptions) {
+		for (const option of defaultOptions) {
+			optionList.push({
+				label: option.name,
+				value: option.name,
+			});
+		}
+	}
+
+	if (optionList && options.length === 0) {
+		options.push(...optionList);
+	}
+
+	const createOption = (label: string) => ({
+		label,
+		value: label,
+	});
+
+	const handleCreate = (inputValue: any) => {
+		setLoading(true);
+
+		setTimeout(() => {
+			const newOption = createOption(inputValue);
+			console.log(newOption);
+			setOptions([...options, newOption]);
+			setLoading(false);
+		}, 1000);
+	};
+
+	if (creatable) {
+		return (
+			<CreatableSelect
+				type="text"
+				value={value}
+				onChange={(option) => setFieldValue(id, option)}
+				options={options}
+				onBlur={handleBlur}
+				onCreateOption={handleCreate}
+				isDisabled={loading}
+				isLoading={loading}
+			/>
+		);
+	}
+
+	return (
+		<Select
+			type="text"
+			value={value}
+			onChange={(option) => setFieldValue(id, option)}
+			options={optionList}
+			onBlur={handleBlur}
+		/>
+	);
+};
+
 export const FormInput = ({ type, error, ...args }: FormInputProps): JSX.Element => {
 	const isError = error ? true : false;
 	const { touched, name } = args;
@@ -58,7 +137,6 @@ export const FormInput = ({ type, error, ...args }: FormInputProps): JSX.Element
 		</FormStyles.InputContainer>
 	);
 };
-
 const Form = ({ children, handleSubmit }): JSX.Element => (
 	<FormStyles.FormBody onSubmit={handleSubmit}>{children}</FormStyles.FormBody>
 );

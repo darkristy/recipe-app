@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/ban-ts-ignore */
 /* eslint-disable no-shadow */
 
-import { Arg, Authorized, Ctx, Query, Resolver } from "type-graphql";
+import console from "console";
+
+import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { cuisine, ingredient, measurmentUnit, PrismaClient, recipe } from "@prisma/client";
 
-import { Cuisine, Ingredient, MeasurmentUnit, Recipe, UserRole } from "../models";
+import { Cuisine, Ingredient, MeasurmentUnit, Recipe, RecipeIngredient, RecipeInput, UserRole } from "../models";
 
 const prisma = new PrismaClient();
 
@@ -78,5 +80,13 @@ export class RecipeResolver {
 		const possibleRecipe = await prisma.recipe.findUnique({ where: { id: recipeId }, include: { cuisine: true } });
 
 		return possibleRecipe;
+	}
+
+	@Mutation(() => String)
+	@Authorized()
+	async createNewRecipe(@Arg("recipeInput") recipeInput: RecipeInput) {
+		console.log(recipeInput);
+
+		return "success";
 	}
 }

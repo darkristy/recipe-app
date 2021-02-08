@@ -1,5 +1,5 @@
 import { IsString } from "class-validator";
-import { Field, GraphQLISODateTime, InputType, ObjectType, registerEnumType } from "type-graphql";
+import { Field, GraphQLISODateTime, InputType, Int, ObjectType, registerEnumType } from "type-graphql";
 
 import { AbstractModel } from "./abstract-model";
 
@@ -134,7 +134,63 @@ export class RecipeIngredient extends AbstractModel {
 	ingredient: Ingredient;
 }
 
-@ObjectType()
+@InputType()
+export class MeasurmentQtyInput {
+	@Field(() => String)
+	amount: string;
+}
+@InputType()
+export class MeasurmentUnitInput {
+	@Field(() => String)
+	name: string;
+}
+
+@InputType()
+export class IngredientInput {
+	@Field(() => String)
+	name: string;
+}
+
+@InputType()
+export class RecipeIngredientInput {
+	@Field(() => MeasurmentUnitInput)
+	measurmentUnit: MeasurmentUnit;
+	@Field(() => MeasurmentQtyInput)
+	measurmentQty: MeasurmentQtyInput;
+
+	@Field(() => IngredientInput)
+	ingredient: IngredientInput;
+}
+
+@InputType()
+export class InstructionInput {
+	@Field()
+	description: string;
+}
+
+@InputType()
+export class RecipeInput {
+	@Field()
+	name: string;
+	@Field(() => GraphQLISODateTime)
+	cookTime: Date;
+
+	@Field(() => GraphQLISODateTime)
+	prepTime: Date;
+
+	@Field(() => String)
+	imageUrl: string;
+
+	@Field(() => [RecipeIngredientInput])
+	ingredients: RecipeIngredientInput[];
+
+	@Field(() => [InstructionInput])
+	instructions: InstructionInput[];
+
+	@Field(() => Int)
+	cuisineId: number;
+}
+
 @InputType()
 export class UserRegisterInput {
 	@Field()

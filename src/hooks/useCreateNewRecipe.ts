@@ -1,8 +1,5 @@
-import { useQuery, useMutation, UseMutationResult } from "react-query";
+import { useMutation } from "@apollo/client";
 
-import { fetcher } from "../lib/fetcher";
+import { CreateNewRecipeMutation } from "../graphql/queries/recipeMutations";
 
-// const createRecipe = (variables, token: string): Promise<any> => fetcher(GetCuisineByNameQuery, token, variables);
-
-// export const useCreateNewRecipe = (token: string): UseMutationResult<any, unknown, any, unknown> =>
-// 	useMutation((newRecipe: any) => createRecipe(newRecipe, token));
+export const useCreateNewRecipe = (recipInput) => useMutation(CreateNewRecipeMutation);

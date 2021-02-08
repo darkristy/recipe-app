@@ -16,6 +16,7 @@ import { onError } from "@apollo/client/link/error";
 import cookie from "cookie";
 import Head from "next/head";
 
+import AppBar from "../components/AppBar";
 import { CLIENT_URL } from "../utils/constants";
 import { getAccessToken, setAccessToken } from "../utils/helpers";
 
@@ -37,15 +38,20 @@ export function withApollo(
 	displayName: string;
 	getInitialProps(ctx: any): Promise<any>;
 } {
-	const WithApollo = ({ apolloClient, serverAccessToken, apolloState, ...pageProps }: any): JSX.Element => {
+	const WithApollo = ({ apolloClient, path, serverAccessToken, apolloState, ...pageProps }: any): JSX.Element => {
 		if (!isServer() && !getAccessToken()) {
 			setAccessToken(serverAccessToken);
 		}
 		const client = apolloClient || initApolloClient(apolloState);
 
+		const whiteListedRoutes = /^(\/recipes|\/home|\/bookmarks|\/new-recipe|\/profile)$/;
+
+		const isDisabled = path.match(whiteListedRoutes) ? false : true;
+
 		return (
 			<ApolloProvider client={client}>
 				<PageComponent {...pageProps} />
+				<AppBar disabled={isDisabled} />
 			</ApolloProvider>
 		);
 	};
@@ -67,6 +73,7 @@ export function withApollo(
 		WithApollo.getInitialProps = async (ctx: any): Promise<any> => {
 			const { AppTree, req, res } = ctx;
 
+			const path = ctx.pathname;
 			let serverAccessToken = "";
 
 			if (isServer()) {
@@ -108,6 +115,7 @@ export function withApollo(
 							<AppTree
 								pageProps={{
 									...pageProps,
+									path,
 									apolloClient,
 								}}
 								apolloClient={apolloClient}
@@ -135,6 +143,7 @@ export function withApollo(
 				apolloState,
 				serverAccessToken,
 				id,
+				path,
 			};
 		};
 	}

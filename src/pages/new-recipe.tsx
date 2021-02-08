@@ -5,11 +5,12 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React from "react";
 import * as yup from "yup";
-import Select from "react-select";
 
-import { useGetCuisines, useGetIngredients, useGetUnits } from "../hooks/useOptions";
-import Form, { FormInput } from "../components/Form";
+import { useFetchCuisines, useFetchIngredients, useFetchUnits } from "../hooks/useOptions";
+import Form, { FormInput, FormSelect } from "../components/Form";
 import { withAuth } from "../lib/withAuth";
+import { withApollo } from "../lib/withApollo";
+import Button from "../components/Button";
 
 interface NewRecipeProps {
 	token: string;
@@ -24,50 +25,26 @@ interface FormInputs {
 	password: string;
 }
 
-const NewRecipeScreen: NextPage<NewRecipeProps> = ({ token }) => {
+const NewRecipeScreen: NextPage<NewRecipeProps> = () => {
 	const router = useRouter();
 
-	const optionUnits = [];
-	const optionCuisines = [];
-	const optionIngredients = [];
+	const units = useFetchUnits();
+	const cuisines = useFetchCuisines();
+	const ingredients = useFetchIngredients();
 
-	const { data: units } = useGetUnits(token);
-	const { data: cuisines } = useGetCuisines(token);
-	const { data: ingredients } = useGetIngredients(token);
-
-	if (units) {
-		for (const unit of units?.measurmentUnits) {
-			optionUnits.push({
-				value: unit.name,
-				label: unit.name,
-			});
-		}
-	}
-
-	if (cuisines) {
-		for (const cuisine of cuisines?.cuisines) {
-			optionCuisines.push({
-				value: cuisine.name,
-				label: cuisine.name,
-			});
-		}
-	}
-	if (ingredients) {
-		for (const ingredient of ingredients?.ingredients) {
-			optionIngredients.push({
-				value: ingredient.name,
-				label: ingredient.name,
-			});
-		}
-	}
-
-	const { handleBlur, handleSubmit, handleChange, errors, values, touched } = useFormik({
+	const { handleBlur, handleSubmit, handleChange, errors, values, touched, setFieldValue } = useFormik({
 		initialValues: {
-			username: "",
-			password: "",
+			name: "",
+			prepTime: "",
+			cuisine: {},
+			recipeIngredient: {
+				qty: "",
+				unit: {},
+				ingredient: {},
+			},
 		},
-		onSubmit: async (loginInput: FormInputs): Promise<void> => {
-			const { username, password } = loginInput;
+		onSubmit: async (input): Promise<void> => {
+			console.log(input.cuisine);
 		},
 		validationSchema: yup.object().shape({
 			username: yup.string(),
@@ -83,12 +60,43 @@ const NewRecipeScreen: NextPage<NewRecipeProps> = ({ token }) => {
 	return (
 		<NewRecipeScreenStyles.Container exit={{ opacity: 0 }}>
 			<Form handleSubmit={handleSubmit}>
-				<Select options={optionCuisines} />
-				<Select options={optionUnits} />
-				<Select options={optionIngredients} />
+				<FormSelect
+					id="cuisine"
+					defaultOptions={cuisines.data?.cuisines}
+					value={values.cuisine}
+					setFieldValue={setFieldValue}
+					handleBlur={handleBlur}
+				/>
+
+				<FormSelect
+					id="ingredient"
+					defaultOptions={ingredients.data?.ingredients}
+					value={values.recipeIngredient.ingredient}
+					setFieldValue={setFieldValue}
+					handleBlur={handleBlur}
+					creatable
+				/>
+				<FormInput
+					type="text"
+					name="qty"
+					onChange={handleChange}
+					touched={touched.recipeIngredient?.qty}
+					value={values.recipeIngredient?.qty}
+					error={errors.recipeIngredient?.qty}
+					onBlur={handleBlur}
+				/>
+				<FormSelect
+					id="unit"
+					defaultOptions={units.data?.measurmentUnits}
+					value={values.recipeIngredient.unit}
+					setFieldValue={setFieldValue}
+					handleBlur={handleBlur}
+				/>
+
+				<Button type="submit" label="Create Recipe" size="full" primary />
 			</Form>
 		</NewRecipeScreenStyles.Container>
 	);
 };
 
-export default withAuth(NewRecipeScreen);
+export default withApollo(NewRecipeScreen);
