@@ -187,8 +187,8 @@ export class RecipeInput {
 	@Field(() => [InstructionInput])
 	instructions: InstructionInput[];
 
-	@Field(() => Int)
-	cuisineId: number;
+	@Field(() => String)
+	cuisine: string;
 }
 
 @InputType()

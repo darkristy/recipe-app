@@ -84,8 +84,77 @@ export class RecipeResolver {
 
 	@Mutation(() => String)
 	@Authorized()
-	async createNewRecipe(@Arg("recipeInput") recipeInput: RecipeInput) {
+	async createNewRecipe(@Arg("recipeInput") recipeInput: RecipeInput, @Ctx() ctx) {
 		console.log(recipeInput);
+
+		const payload = ctx.payload;
+
+		console.log(payload);
+
+		// const { name, prepTime, cuisine, cookTime, imageUrl, ingredients, instructions } = recipeInput;
+
+		// const { id: cuisineId } = await prisma.cuisine.findUnique({
+		// 	where: {
+		// 		name: cuisine,
+		// 	},
+		// });
+
+		// await prisma.recipe.create({
+		// 	data: {
+		// 		name,
+		// 		prepTime,
+		// 		cookTime,
+		// 		cuisineId,
+		// 		imageUrl,
+		// 		userId: payload.userId,
+		// 	},
+		// });
+
+		// const { id: recipeId } = await prisma.recipe.findUnique({
+		// 	where: {
+		// 		name,
+		// 	},
+		// });
+
+		// for (const item of ingredients) {
+		// 	const possibleIngredient = await prisma.ingredient.findUnique({
+		// 		where: {
+		// 			name: item.ingredient.name,
+		// 		},
+		// 	});
+
+		// 	const { id: measurmentUnitId } = await prisma.measurmentUnit.findUnique({
+		// 		where: {
+		// 			name: item.measurmentUnit.name,
+		// 		},
+		// 	});
+
+		// 	if (!possibleIngredient) {
+		// 		await prisma.ingredient.create({
+		// 			data: {
+		// 				name: item.ingredient.name,
+		// 			},
+		// 		});
+		// 	}
+
+		// 	await prisma.recipeIngredient.create({
+		// 		data: {
+		// 			measurmentQty: item.measurmentQty.amount,
+		// 			ingredientId: possibleIngredient.id,
+		// 			measurmentUnitId,
+		// 			recipeId,
+		// 		},
+		// 	});
+		// }
+
+		// for (const instruction of instructions) {
+		// 	await prisma.instruction.create({
+		// 		data: {
+		// 			description: instruction.description,
+		// 			recipeId,
+		// 		},
+		// 	});
+		// }
 
 		return "success";
 	}

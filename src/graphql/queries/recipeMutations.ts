@@ -3,12 +3,12 @@ import { gql } from "@apollo/client";
 export const CreateNewRecipeMutation = gql`
 	mutation CreateNewRecipe(
 		$name: String!
-		$prepTime: String!
-		$cookTime: String!
+		$prepTime: DateTime!
+		$cookTime: DateTime!
 		$imageUrl: String!
-		$cuisineId: String!
-		$ingredients: [RecipeIngredientInput]!
-		$instructions: [InstructionInput]!
+		$cuisine: String!
+		$ingredients: [RecipeIngredientInput!]!
+		$instructions: [InstructionInput!]!
 	) {
 		createNewRecipe(
 			recipeInput: {
@@ -16,7 +16,7 @@ export const CreateNewRecipeMutation = gql`
 				cookTime: $cookTime
 				prepTime: $prepTime
 				imageUrl: $imageUrl
-				cuisineId: $cuisineId
+				cuisine: $cuisine
 				ingredients: $ingredients
 				instructions: $instructions
 			}

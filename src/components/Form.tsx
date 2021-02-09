@@ -11,6 +11,7 @@ interface FormInputProps {
 	touched: any;
 	onChange: any;
 	onBlur: any;
+	noMargin?: any;
 }
 
 interface FormSelectProps {
@@ -23,9 +24,9 @@ interface FormSelectProps {
 }
 
 const FormStyles = {
-	InputContainer: styled.div`
+	InputContainer: styled.div<{ noMargin?: boolean }>`
 		&:first-child {
-			margin-bottom: 38px;
+			margin-bottom: ${(props) => (props.noMargin ? 0 : "38px")};
 		}
 	`,
 	Input: styled.input<{ error: boolean }>`
@@ -128,11 +129,12 @@ export const FormSelect: React.FC<FormSelectProps> = ({
 };
 
 export const FormInput = ({ type, error, ...args }: FormInputProps): JSX.Element => {
+	const { touched, noMargin, name } = args;
 	const isError = error ? true : false;
-	const { touched, name } = args;
+	const hasNoMargin = noMargin ? true : false;
 
 	return (
-		<FormStyles.InputContainer>
+		<FormStyles.InputContainer noMargin={hasNoMargin}>
 			<FormStyles.Input type={type} error={isError} placeholder={name} {...args} />
 		</FormStyles.InputContainer>
 	);
