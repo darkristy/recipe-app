@@ -1,26 +1,20 @@
 import styled from "@emotion/styled";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
-import { useState } from "react";
+import React, { useState } from "react";
+import { FieldArray, FieldProps, getIn } from "formik";
 
-interface FormInputProps {
-	type: string;
-	name: string;
-	value: any;
-	error: any;
-	touched: any;
-	onChange: any;
-	onBlur: any;
+import Button from "./Button";
+
+interface FormInputProps extends FieldProps {
+	type: any;
 	noMargin?: any;
 }
 
-interface FormSelectProps {
+interface FormSelectProps extends FieldProps {
 	creatable?: boolean;
-	id: string;
 	defaultOptions: any;
-	value: any;
 	setFieldValue: any;
-	handleBlur: any;
 }
 
 const FormStyles = {
@@ -60,14 +54,7 @@ const FormStyles = {
 	`,
 };
 
-export const FormSelect: React.FC<FormSelectProps> = ({
-	id,
-	creatable,
-	defaultOptions,
-	handleBlur,
-	value,
-	setFieldValue,
-}) => {
+export const FormSelect: React.FC<FormSelectProps> = ({ creatable, defaultOptions, setFieldValue, field }) => {
 	const [loading, setLoading] = useState(false);
 	const [options, setOptions] = useState([]);
 
@@ -106,10 +93,10 @@ export const FormSelect: React.FC<FormSelectProps> = ({
 		return (
 			<CreatableSelect
 				type="text"
-				value={value}
-				onChange={(option) => setFieldValue(id, option)}
+				value={field.value}
+				onChange={(option) => setFieldValue(field.name, option)}
 				options={options}
-				onBlur={handleBlur}
+				onBlur={field.onBlur}
 				onCreateOption={handleCreate}
 				isDisabled={loading}
 				isLoading={loading}
@@ -120,22 +107,23 @@ export const FormSelect: React.FC<FormSelectProps> = ({
 	return (
 		<Select
 			type="text"
-			value={value}
-			onChange={(option) => setFieldValue(id, option)}
+			value={field.value}
+			onChange={(option) => setFieldValue(field.name, option)}
 			options={optionList}
-			onBlur={handleBlur}
+			onBlur={field.onBlur}
 		/>
 	);
 };
 
-export const FormInput = ({ type, error, ...args }: FormInputProps): JSX.Element => {
-	const { touched, noMargin, name } = args;
+export const FormInput = ({ type, field, form: { errors }, noMargin }: FormInputProps): JSX.Element => {
+	const error = getIn(errors, field.name);
+
 	const isError = error ? true : false;
 	const hasNoMargin = noMargin ? true : false;
 
 	return (
 		<FormStyles.InputContainer noMargin={hasNoMargin}>
-			<FormStyles.Input type={type} error={isError} placeholder={name} {...args} />
+			<FormStyles.Input type={type} error={isError} placeholder={field.name} {...field} />
 		</FormStyles.InputContainer>
 	);
 };

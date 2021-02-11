@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { NextPage } from "next";
 import styled from "@emotion/styled";
 import * as yup from "yup";
-import { useFormik } from "formik";
+import { Field, useFormik, FormikProvider } from "formik";
 import { useRouter } from "next/router";
 
 import { Sublink } from "../shared/UIElements";
@@ -47,7 +47,7 @@ const LoginScreen: NextPage = () => {
 
 	const router = useRouter();
 
-	const { handleBlur, handleSubmit, handleChange, errors, values, touched } = useFormik({
+	const formik = useFormik({
 		initialValues: {
 			username: "",
 			password: "",
@@ -84,36 +84,20 @@ const LoginScreen: NextPage = () => {
 			</LoginScreenStyles.TopSection>
 			<LoginScreenStyles.BottomSection>
 				<Wrapper>
-					<Form handleSubmit={handleSubmit}>
-						<FormInput
-							type="text"
-							name="username"
-							onChange={handleChange}
-							touched={touched.username}
-							value={values.username}
-							error={errors.username}
-							onBlur={handleBlur}
-						/>
+					<FormikProvider value={formik}>
+						<Form handleSubmit={formik.handleSubmit}>
+							<Field name="username" component={FormInput} />
+							<Field type="password" name="password" component={FormInput} />
+							<Mixins.Flex flexEnd style={{ paddingTop: 10, paddingBottom: 24 }}>
+								<Sublink href="/login" linkedText="Forgot Password?" />
+							</Mixins.Flex>
+							<Button type="submit" label="Login" size="full" primary />
 
-						<FormInput
-							type="password"
-							name="password"
-							onChange={handleChange}
-							touched={touched.password}
-							value={values.password}
-							error={errors.password}
-							onBlur={handleBlur}
-						/>
-						<Mixins.Flex flexEnd style={{ paddingTop: 10, paddingBottom: 24 }}>
-							<Sublink href="/login" linkedText="Forgot Password?" />
-						</Mixins.Flex>
-						<Button type="submit" label="Login" size="full" primary />
-
-						<Mixins.Flex center style={{ paddingTop: 26 }}>
-							<Sublink href="/register" unlinkedText="Don't have an account? " linkedText="Signup." />
-						</Mixins.Flex>
-					</Form>
-
+							<Mixins.Flex center style={{ paddingTop: 26 }}>
+								<Sublink href="/register" unlinkedText="Don't have an account? " linkedText="Signup." />
+							</Mixins.Flex>
+						</Form>
+					</FormikProvider>
 					<Mixins.Flex center style={{ paddingTop: 26 }}>
 						{error && <Alert message={errorMessage} severity="error" />}
 					</Mixins.Flex>
