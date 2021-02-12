@@ -5,17 +5,18 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import * as yup from "yup";
 import { useMutation } from "@apollo/client";
-import React from "react";
+import { Fragment } from "react";
 
+import Button from "../components/Button";
 import { CreateNewRecipe, CreateNewRecipeVariables } from "../generated/CreateNewRecipe";
 import Alert from "../components/Alert";
 import { CreateNewRecipeMutation } from "../graphql/queries/recipeMutations";
 import { Mixins } from "../styles/mixins";
 import { Wrapper } from "../styles/globals";
 import { useFetchCuisines, useFetchIngredients, useFetchUnits } from "../hooks/useOptions";
-import Form, { FormInput, FormSelect } from "../components/Form";
+import Form, { FormCreatableSelect, FormInput, FormSelect } from "../components/Form";
 import { withApollo } from "../lib/withApollo";
-import Button from "../components/Button";
+import MiniButton from "../components/MiniButton";
 
 interface NewRecipeProps {
 	token: string;
@@ -49,18 +50,20 @@ const NewRecipeScreen: NextPage<NewRecipeProps> = () => {
 	const cuisines = useFetchCuisines();
 	const ingredients = useFetchIngredients();
 
+	const margin = "14px";
+
 	const formik = useFormik({
 		initialValues: {
 			name: "",
 			prepTime: "",
 			cookTime: "",
-			cuisine: {},
+			cuisine: "",
 			imageUrl: "",
 			ingredients: [
 				{
 					qty: "",
-					unit: {},
-					ingredient: {},
+					unit: "",
+					ingredient: "",
 				},
 			],
 			instructions: [
@@ -88,81 +91,116 @@ const NewRecipeScreen: NextPage<NewRecipeProps> = () => {
 			<Wrapper>
 				<FormikProvider value={formik}>
 					<Form handleSubmit={formik.handleSubmit}>
-						<Field component={FormInput} name="name" />
-						<Mixins.Flex spaceBetween>
-							<Field component={FormInput} name="prepTime" noMargin />
-							<Field component={FormInput} name="cookTime" />
+						<Mixins.Margin marginBottom={margin}>
+							<Field component={FormInput} name="name" placeholder="Name" />
+						</Mixins.Margin>
+						<Mixins.Flex margin={`0 0 ${margin} 0`}>
+							<Field component={FormInput} name="prepTime" placeholder="Prep Time" />
+							<Mixins.Spacer width="20px" />
+							<Field component={FormInput} name="cookTime" placeholder="Cook Time" />
 						</Mixins.Flex>
-						<Field
-							component={FormSelect}
-							name="cuisine"
-							defaultOptions={cuisines.data?.cuisines}
-							setFieldValue={formik.setFieldValue}
-						/>
-						<Field component={FormInput} name="imageUrl" />
+						<Mixins.Margin marginBottom={margin}>
+							<Field
+								component={FormSelect}
+								name="cuisine"
+								defaultOptions={cuisines.data?.cuisines}
+								setFieldValue={formik.setFieldValue}
+							/>
+						</Mixins.Margin>
 
+						<Mixins.Margin marginBottom={margin}>
+							<Field component={FormInput} name="imageUrl" placeholder="Image Url" />
+						</Mixins.Margin>
 						<FieldArray name="ingredients">
-							{({ push }) => (
+							{({ push, remove }): JSX.Element => (
 								<>
-									{formik.values.ingredients.map((value, idx) => (
-										<React.Fragment key={idx}>
-											<Mixins.Flex spaceBetween>
+									{formik.values.ingredients.map((_, idx) => (
+										<Fragment key={idx}>
+											<Mixins.Flex margin={`0 0 ${margin} 0`}>
+												<MiniButton
+													label="×"
+													onClick={(): void => remove(idx)}
+													padding="0px 8px"
+												/>
+												<Mixins.Spacer width="20px" />
 												<Field
 													name={`ingredients[${idx}].ingredient`}
-													component={FormSelect}
+													component={FormCreatableSelect}
 													defaultOptions={ingredients.data?.ingredients}
 													setFieldValue={formik.setFieldValue}
 												/>
-												<Field name={`ingredients[${idx}].qty`} component={FormInput} />
+												<Mixins.Spacer width="20px" />
+												<Field
+													name={`ingredients[${idx}].qty`}
+													component={FormInput}
+													placeholder="Qty"
+													size="30%"
+													width="20px"
+												/>
+												<Mixins.Spacer width="20px" />
 												<Field
 													name={`ingredients[${idx}].unit`}
 													component={FormSelect}
 													defaultOptions={units.data?.measurmentUnits}
+													defaultValue={{ label: "cup", value: "cup" }}
 													setFieldValue={formik.setFieldValue}
+													size="40%"
 												/>
 											</Mixins.Flex>
-										</React.Fragment>
+										</Fragment>
 									))}
-									<Button
-										type="button"
-										label="Add Ingredient"
-										size="small"
-										onClick={() =>
-											push({
-												qty: "",
-												unit: {},
-												ingredient: {},
-											})
-										}
-									/>
+
+									<Mixins.Flex flexEnd margin={`0 0 ${margin} 0`}>
+										<MiniButton
+											label="Add Ingredient"
+											onClick={() =>
+												push({
+													qty: "",
+													unit: {},
+													ingredient: {},
+												})
+											}
+											padding="0px 12px"
+											borderRadius="16px"
+										/>
+									</Mixins.Flex>
 								</>
 							)}
 						</FieldArray>
 
 						<FieldArray name="instructions">
-							{({ push }) => (
+							{({ push, remove }): JSX.Element => (
 								<>
-									{formik.values.instructions.map((value, idx) => (
-										<React.Fragment key={idx}>
-											<Mixins.Flex>
+									{formik.values.instructions.map((_, idx) => (
+										<Fragment key={idx}>
+											<Mixins.Flex margin={`0 0 ${margin} 0`}>
+												<MiniButton
+													label="×"
+													onClick={(): void => remove(idx)}
+													padding="0px 8px"
+												/>
+												<Mixins.Spacer width="12px" />
 												<Field
 													name={`instructions[${idx}].description`}
+													placeholder="Instruction"
 													noMargin
 													component={FormInput}
 												/>
 											</Mixins.Flex>
-										</React.Fragment>
+										</Fragment>
 									))}
-									<Button
-										type="button"
-										label="Add Step"
-										size="small"
-										onClick={() =>
-											push({
-												description: "",
-											})
-										}
-									/>
+									<Mixins.Flex flexEnd margin={`0 0 ${margin} 0`}>
+										<MiniButton
+											label="Add Step"
+											onClick={(): void =>
+												push({
+													description: "",
+												})
+											}
+											padding="0px 12px"
+											borderRadius="16px"
+										/>
+									</Mixins.Flex>
 								</>
 							)}
 						</FieldArray>
