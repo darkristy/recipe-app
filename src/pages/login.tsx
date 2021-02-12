@@ -87,6 +87,7 @@ const LoginScreen: NextPage = () => {
 					<FormikProvider value={formik}>
 						<Form handleSubmit={formik.handleSubmit}>
 							<Field name="username" component={FormInput} />
+							<Mixins.Spacer height="20px" />
 							<Field type="password" name="password" component={FormInput} />
 							<Mixins.Flex flexEnd style={{ paddingTop: 10, paddingBottom: 24 }}>
 								<Sublink href="/login" linkedText="Forgot Password?" />
