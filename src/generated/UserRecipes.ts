@@ -7,20 +7,21 @@
 // GraphQL query operation: UserRecipes
 // ====================================================
 
-export interface UserRecipes_userRecipes_ingredients_measurmentQty {
-  __typename: "MeasurmentQty";
-  amount: string;
-}
-
 export interface UserRecipes_userRecipes_ingredients_measurmentUnit {
   __typename: "MeasurmentUnit";
   name: string;
 }
 
+export interface UserRecipes_userRecipes_ingredients_ingredient {
+  __typename: "Ingredient";
+  name: string;
+}
+
 export interface UserRecipes_userRecipes_ingredients {
   __typename: "RecipeIngredient";
-  measurmentQty: UserRecipes_userRecipes_ingredients_measurmentQty;
+  measurmentQty: string;
   measurmentUnit: UserRecipes_userRecipes_ingredients_measurmentUnit;
+  ingredient: UserRecipes_userRecipes_ingredients_ingredient;
 }
 
 export interface UserRecipes_userRecipes_instructions {
@@ -36,6 +37,7 @@ export interface UserRecipes_userRecipes_cuisine {
 export interface UserRecipes_userRecipes {
   __typename: "Recipe";
   id: number;
+  name: string;
   ingredients: UserRecipes_userRecipes_ingredients[];
   instructions: UserRecipes_userRecipes_instructions[];
   imageUrl: string;

@@ -4,11 +4,13 @@ const UserRecipesQuery = gql`
 	query UserRecipes {
 		userRecipes {
 			id
+			name
 			ingredients {
-				measurmentQty {
-					amount
-				}
+				measurmentQty
 				measurmentUnit {
+					name
+				}
+				ingredient {
 					name
 				}
 			}
@@ -60,10 +62,11 @@ const GetRecipeByIdQuery = gql`
 		getRecipeById(recipeId: $id) {
 			name
 			ingredients {
-				measurmentQty {
-					amount
-				}
+				measurmentQty
 				measurmentUnit {
+					name
+				}
+				ingredient {
 					name
 				}
 			}

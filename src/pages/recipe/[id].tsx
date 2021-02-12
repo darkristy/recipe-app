@@ -2,6 +2,7 @@ import { useQuery } from "@apollo/client";
 import { motion } from "framer-motion";
 import { NextPage } from "next";
 
+import { Mixins } from "../../styles/mixins";
 import { Wrapper } from "../../styles/globals";
 import { GetRecipeById, GetRecipeByIdVariables } from "../../generated/GetRecipeById";
 import { GetRecipeByIdQuery } from "../../graphql/queries/recipeQueries";
@@ -32,8 +33,6 @@ const RecipeScreen: NextPage<RecipeScreenProps> = ({ id }) => {
 
 	const recipe = data?.getRecipeById;
 
-	const ingredients = recipe.ingredients;
-
 	return (
 		<motion.div exit={{ opacity: 0 }}>
 			<div style={{ padding: "6%" }}>
@@ -41,8 +40,19 @@ const RecipeScreen: NextPage<RecipeScreenProps> = ({ id }) => {
 			</div>
 			<Wrapper>
 				<h2>{recipe.name}</h2>
-				<p style={{ lineHeight: "1.7em" }}>{recipe.ingredients}</p>
-				<p>{recipe.instructions}</p>
+				{recipe.ingredients.map(({ ingredient, measurmentQty, measurmentUnit }, idx) => (
+					<Mixins.Flex key={idx}>
+						<p style={{ lineHeight: "1.7em" }}>{measurmentQty}</p>
+						<p style={{ lineHeight: "1.7em" }}>{measurmentUnit.name}</p>
+						<p style={{ lineHeight: "1.7em" }}>{ingredient.name}</p>
+					</Mixins.Flex>
+				))}
+
+				{recipe.instructions.map(({ description }) => (
+					<Mixins.Flex>
+						<p style={{ lineHeight: "1.7em" }}>{description}</p>
+					</Mixins.Flex>
+				))}
 			</Wrapper>
 		</motion.div>
 	);

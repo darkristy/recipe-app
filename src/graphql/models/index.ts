@@ -127,8 +127,8 @@ export class RecipeIngredient extends AbstractModel {
 	recipe: Recipe;
 	@Field(() => MeasurmentUnit)
 	measurmentUnit: MeasurmentUnit;
-	@Field(() => MeasurmentQty)
-	measurmentQty: MeasurmentQty;
+	@Field(() => String)
+	measurmentQty: string;
 
 	@Field(() => Ingredient)
 	ingredient: Ingredient;
@@ -155,8 +155,8 @@ export class IngredientInput {
 export class RecipeIngredientInput {
 	@Field(() => MeasurmentUnitInput)
 	measurmentUnit: MeasurmentUnit;
-	@Field(() => MeasurmentQtyInput)
-	measurmentQty: MeasurmentQtyInput;
+	@Field(() => String)
+	measurmentQty: string;
 
 	@Field(() => IngredientInput)
 	ingredient: IngredientInput;

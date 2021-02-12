@@ -7,20 +7,21 @@
 // GraphQL query operation: GetRecipeById
 // ====================================================
 
-export interface GetRecipeById_getRecipeById_ingredients_measurmentQty {
-  __typename: "MeasurmentQty";
-  amount: string;
-}
-
 export interface GetRecipeById_getRecipeById_ingredients_measurmentUnit {
   __typename: "MeasurmentUnit";
   name: string;
 }
 
+export interface GetRecipeById_getRecipeById_ingredients_ingredient {
+  __typename: "Ingredient";
+  name: string;
+}
+
 export interface GetRecipeById_getRecipeById_ingredients {
   __typename: "RecipeIngredient";
-  measurmentQty: GetRecipeById_getRecipeById_ingredients_measurmentQty;
+  measurmentQty: string;
   measurmentUnit: GetRecipeById_getRecipeById_ingredients_measurmentUnit;
+  ingredient: GetRecipeById_getRecipeById_ingredients_ingredient;
 }
 
 export interface GetRecipeById_getRecipeById_instructions {

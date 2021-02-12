@@ -40,7 +40,7 @@ const RecipesScreen: NextPage<RecipesScreenProps> = () => {
 											size="medium"
 											image={recipe.imageUrl}
 											name={recipe.name}
-											category={recipe.category.name}
+											category={recipe.cuisine.name}
 										/>
 									</li>
 								</a>

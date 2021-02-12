@@ -61,9 +61,13 @@ const NewRecipeScreen: NextPage<NewRecipeProps> = () => {
 			imageUrl: "",
 			ingredients: [
 				{
-					qty: "",
-					unit: "",
-					ingredient: "",
+					measurmentUnit: {
+						name: "",
+					},
+					measurmentQty: "",
+					ingredient: {
+						name: "",
+					},
 				},
 			],
 			instructions: [
@@ -73,6 +77,11 @@ const NewRecipeScreen: NextPage<NewRecipeProps> = () => {
 			],
 		},
 		onSubmit: async (input): Promise<void> => {
+			const response = await submitRecipe({ variables: { ...input } }).catch((err) => null);
+
+			if (response && response.data) {
+				console.log(response);
+			}
 			console.log(input);
 		},
 		validationSchema: yup.object().shape({
@@ -124,14 +133,14 @@ const NewRecipeScreen: NextPage<NewRecipeProps> = () => {
 												/>
 												<Mixins.Spacer width="20px" />
 												<Field
-													name={`ingredients[${idx}].ingredient`}
+													name={`ingredients[${idx}].ingredient.name`}
 													component={FormCreatableSelect}
 													defaultOptions={ingredients.data?.ingredients}
 													setFieldValue={formik.setFieldValue}
 												/>
 												<Mixins.Spacer width="20px" />
 												<Field
-													name={`ingredients[${idx}].qty`}
+													name={`ingredients[${idx}].measurmentQty.amount`}
 													component={FormInput}
 													placeholder="Qty"
 													size="30%"
@@ -139,10 +148,9 @@ const NewRecipeScreen: NextPage<NewRecipeProps> = () => {
 												/>
 												<Mixins.Spacer width="20px" />
 												<Field
-													name={`ingredients[${idx}].unit`}
+													name={`ingredients[${idx}].measurmentUnit.name`}
 													component={FormSelect}
 													defaultOptions={units.data?.measurmentUnits}
-													defaultValue={{ label: "cup", value: "cup" }}
 													setFieldValue={formik.setFieldValue}
 													size="40%"
 												/>
@@ -155,9 +163,13 @@ const NewRecipeScreen: NextPage<NewRecipeProps> = () => {
 											label="Add Ingredient"
 											onClick={() =>
 												push({
-													qty: "",
-													unit: {},
-													ingredient: {},
+													measurmentUnit: {
+														name: "",
+													},
+													measurmentQty: "",
+													ingredient: {
+														name: "",
+													},
 												})
 											}
 											padding="0px 12px"

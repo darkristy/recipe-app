@@ -15,17 +15,13 @@ export interface InstructionInput {
   description: string;
 }
 
-export interface MeasurmentQtyInput {
-  amount: string;
-}
-
 export interface MeasurmentUnitInput {
   name: string;
 }
 
 export interface RecipeIngredientInput {
   measurmentUnit: MeasurmentUnitInput;
-  measurmentQty: MeasurmentQtyInput;
+  measurmentQty: string;
   ingredient: IngredientInput;
 }
 
