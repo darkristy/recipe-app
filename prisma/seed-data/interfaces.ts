@@ -32,6 +32,6 @@ export interface RecipeSeed {
 export interface RecipeIngredientSeed {
 	recipeId: number;
 	ingredientId: number;
-	measurmentQtyId: number;
+	measurmentQty: string;
 	measurmentUnitId: number;
 }

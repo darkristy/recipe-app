@@ -7,12 +7,26 @@ interface FlexProps {
 	alignTop?: any;
 	noHeight?: any;
 	center?: any;
+	margin?: any;
 }
 
+interface MarginProps {
+	marginBottom?: any;
+	marginTop?: any;
+	marginLeft?: any;
+	marginRight?: any;
+}
+
+interface SpacerProps {
+	grow?: string;
+	width?: string;
+	height?: string;
+}
 const Flex = styled.div<FlexProps>`
 	position: relative;
 	display: flex;
 	align-items: center;
+	margin: ${(props): string => (props.margin ? props.margin : "")};
 	${(props): any =>
 		props.spaceBetween &&
 		css`
@@ -40,6 +54,21 @@ const Flex = styled.div<FlexProps>`
 		`};
 `;
 
+const Margin = styled.div<MarginProps>`
+	margin-top: ${(props) => (props.marginTop ? props.marginTop : 0)};
+	margin-bottom: ${(props) => (props.marginBottom ? props.marginBottom : 0)};
+	margin-left: ${(props) => (props.marginLeft ? props.marginLeft : 0)};
+	margin-right: ${(props) => (props.marginRight ? props.marginRight : 0)};
+`;
+
+const Spacer = styled.div<SpacerProps>`
+	width: ${(props) => (props.width ? props.width : 0)};
+	flex-grow: ${(props) => (props.grow ? props.grow : 0)};
+	height: ${(props) => (props.height ? props.height : 0)};
+`;
+
 export const Mixins = {
-	Flex: Flex,
+	Flex,
+	Margin,
+	Spacer,
 };

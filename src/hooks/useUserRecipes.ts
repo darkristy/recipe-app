@@ -1,6 +1,7 @@
-import { useQuery } from "react-query";
+import { QueryResult, useQuery } from "@apollo/client";
 
+import { UserRecipes } from "../generated/UserRecipes";
 import { UserRecipesQuery } from "../graphql/queries/recipeQueries";
-import { fetcher } from "../lib/fetcher";
 
-export const useUserRecipes = (token) => useQuery("userRecipes", () => fetcher(UserRecipesQuery, token));
+export const useUserRecipes = (): QueryResult<UserRecipes, Record<string, any>> =>
+	useQuery<UserRecipes>(UserRecipesQuery);

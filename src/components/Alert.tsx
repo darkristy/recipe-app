@@ -55,8 +55,7 @@ const AlertStyles = {
 			`};
 	`,
 };
-
-export const Alert: React.FC<AlertProps> = ({ message, severity, ...props }) => {
+const Alert: React.FC<AlertProps> = ({ message, severity, ...props }) => {
 	const isWarning = severity === "warning" ? true : false;
 	const isError = severity === "error" ? true : false;
 	const isSuccess = severity === "success" ? true : false;
@@ -68,3 +67,5 @@ export const Alert: React.FC<AlertProps> = ({ message, severity, ...props }) => 
 		</AlertStyles.Container>
 	);
 };
+
+export default Alert;

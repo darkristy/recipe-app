@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 
 import { measurmentUnitSeeder } from "./seeders/measurmentUnit.seeder";
-import { measurmentQtySeeder } from "./seeders/measurmentQty.seeder";
 import { recipeIngredientSeeder } from "./seeders/recipe-ingredients.seeder";
 import { ingredientSeeder } from "./seeders/ingredient.seeder";
 import { cuisineSeeder } from "./seeders/cuisine.seeder";
@@ -13,7 +12,7 @@ const prisma = new PrismaClient();
 const seed =
 	process.env.NODE_ENV !== "production"
 		? [
-				cuisineSeeder(prisma),
+				// cuisineSeeder(prisma),
 				ingredientSeeder(prisma),
 				measurmentUnitSeeder(prisma),
 				// measurmentQtySeeder(prisma),

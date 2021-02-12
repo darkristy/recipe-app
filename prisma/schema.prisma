@@ -16,16 +16,16 @@ enum role {
 }
 
 model user {
-  id            String   @id @default(uuid())
-  email         String   @unique
-  username      String   @unique
-  password      String   @unique
-  token_version Int      @default(0)
-  role          role     @default(user)
-  recipes       recipe[]
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @default(now())
-  deletedAt     DateTime @default(now())
+  id           String   @id @default(uuid())
+  email        String   @unique
+  username     String   @unique
+  password     String   @unique
+  tokenVersion Int      @default(0)
+  role         role     @default(user)
+  recipes      recipe[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+  deletedAt    DateTime @default(now())
 }
 
 model ingredient {
@@ -46,24 +46,14 @@ model measurmentUnit {
   deletedAt        DateTime           @default(now())
 }
 
-model measurmentQty {
-  id               Int                @id @default(autoincrement())
-  amount           String
-  recipeIngredient recipeIngredient[]
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @default(now())
-  deletedAt        DateTime           @default(now())
-}
-
 model recipeIngredient {
   id               Int            @id @default(autoincrement())
   recipe           recipe         @relation(fields: [recipeId], references: [id])
   ingredient       ingredient     @relation(fields: [ingredientId], references: [id])
-  measurmentQty    measurmentQty  @relation(fields: [measurmentQtyId], references: [id])
+  measurmentQty    String
   measurmentUnit   measurmentUnit @relation(fields: [measurmentUnitId], references: [id])
   recipeId         Int
   ingredientId     Int
-  measurmentQtyId  Int
   measurmentUnitId Int
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @default(now())
@@ -93,7 +83,7 @@ model cuisine {
 model recipe {
   id           Int                @id @default(autoincrement())
   name         String             @unique
-  image_url    String             @unique
+  imageUrl     String             @unique
   bookmarked   Boolean            @default(false)
   cookTime     DateTime
   prepTime     DateTime
