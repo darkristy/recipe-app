@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.7](https://github.com/darkristy/recipe-app/compare/v0.1.6...v0.1.7) (2021-02-12)
+
+
+### Bug Fixes
+
+* fixed mistake in seeders ([da985cb](https://github.com/darkristy/recipe-app/commit/da985cba42ee5d35a8ba9000be7e9b287718e5d8))
+
 ### [0.1.6](https://github.com/darkristy/recipe-app/compare/v0.1.5...v0.1.6) (2021-02-12)
 
 
