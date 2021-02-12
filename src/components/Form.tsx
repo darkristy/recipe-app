@@ -1,39 +1,39 @@
 import styled from "@emotion/styled";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
-import React, { useState } from "react";
-import { FieldArray, FieldProps, getIn } from "formik";
+import { FC } from "react";
+import { FieldProps, getIn } from "formik";
 
-import Button from "./Button";
+import { useSelectStyles } from "../hooks/useSelectStyles";
+import { useHandleOptions } from "../hooks/useHandleOptions";
 
 interface FormInputProps extends FieldProps {
 	type: any;
-	noMargin?: any;
+	placeholder: string;
+	size?: string;
 }
 
 interface FormSelectProps extends FieldProps {
-	creatable?: boolean;
-	defaultOptions: any;
-	setFieldValue: any;
+	defaultOptions: any[];
+	defaultValue?: any;
+	size?: string;
 }
 
 const FormStyles = {
-	InputContainer: styled.div<{ noMargin?: boolean }>`
-		&:first-child {
-			margin-bottom: ${(props) => (props.noMargin ? 0 : "38px")};
-		}
+	InputContainer: styled.div<{ size: string }>`
+		width: ${(props): string => (props.size ? props.size : "100%")};
 	`,
 	Input: styled.input<{ error: boolean }>`
 		width: 100%;
-		border: 2px solid ${(props): string => props.theme.quaternary};
-		border-radius: 8px;
-		padding: 13px 16px;
-
+		background: ${(props): string => props.theme.quinary};
+		border-radius: 4px;
+		padding: 7px 8px;
 		font-family: ${(props): string => props.theme.fonts.body};
-		::-webkit-input-placeholder {
-			color: ${(props): string => props.theme.quaternary};
+		::placeholder {
+			color: ${(props): string => props.theme.tiertiary};
 			text-transform: capitalize;
 			font-weight: 500;
+			opacity: 0.63;
 		}
 		&:focus {
 			border: 2px solid ${(props): string => (props.error ? props.theme.tiertiary : `blue`)};
@@ -46,7 +46,7 @@ const FormStyles = {
 	Button: styled.button<{ outline?: boolean }>`
 		padding: 13px 0px;
 		width: 100%;
-		border-radius: 8px;
+		border-radius: 4px;
 		background: ${(props): string => props.theme.tiertiary};
 		color: white;
 		font-family: ${(props): string => props.theme.fonts.body};
@@ -54,76 +54,62 @@ const FormStyles = {
 	`,
 };
 
-export const FormSelect: React.FC<FormSelectProps> = ({ creatable, defaultOptions, setFieldValue, field }) => {
-	const [loading, setLoading] = useState(false);
-	const [options, setOptions] = useState([]);
-
-	const optionList = [];
-
-	if (defaultOptions) {
-		for (const option of defaultOptions) {
-			optionList.push({
-				label: option.name,
-				value: option.name,
-			});
-		}
-	}
-
-	if (optionList && options.length === 0) {
-		options.push(...optionList);
-	}
-
-	const createOption = (label: string) => ({
-		label,
-		value: label,
-	});
-
-	const handleCreate = (inputValue: any) => {
-		setLoading(true);
-
-		setTimeout(() => {
-			const newOption = createOption(inputValue);
-			console.log(newOption);
-			setOptions([...options, newOption]);
-			setLoading(false);
-		}, 1000);
-	};
-
-	if (creatable) {
-		return (
-			<CreatableSelect
-				type="text"
-				value={field.value}
-				onChange={(option) => setFieldValue(field.name, option)}
-				options={options}
-				onBlur={field.onBlur}
-				onCreateOption={handleCreate}
-				isDisabled={loading}
-				isLoading={loading}
-			/>
-		);
-	}
+export const FormSelect: FC<FormSelectProps> = ({ ...props }) => {
+	const { field, form, defaultOptions, size, defaultValue } = props;
+	const { options } = useHandleOptions(defaultOptions);
+	const { customSelectStyles } = useSelectStyles();
 
 	return (
 		<Select
 			type="text"
-			value={field.value}
-			onChange={(option) => setFieldValue(field.name, option)}
-			options={optionList}
-			onBlur={field.onBlur}
+			{...field}
+			defaultValue={defaultValue}
+			value={options ? options.find((option) => option.value === field.value) : ""}
+			onChange={(option): void => form.setFieldValue(field.name, option.value)}
+			options={options}
+			styles={customSelectStyles}
+			width={size}
+			height="20px"
 		/>
 	);
 };
 
-export const FormInput = ({ type, field, form: { errors }, noMargin }: FormInputProps): JSX.Element => {
-	const error = getIn(errors, field.name);
+export const FormCreatableSelect: FC<FormSelectProps> = ({ ...props }) => {
+	const { field, form, defaultOptions, size, defaultValue } = props;
+	const { options, loading, handleCreate } = useHandleOptions(defaultOptions);
+	const { customSelectStyles } = useSelectStyles();
+	return (
+		<CreatableSelect
+			type="text"
+			{...field}
+			defaultValue={defaultValue}
+			value={options ? options.find((option) => option.value === field.value) : ""}
+			onChange={(option): void => form.setFieldValue(field.name, option.value)}
+			options={options}
+			onCreateOption={handleCreate}
+			isDisabled={loading}
+			isLoading={loading}
+			styles={customSelectStyles}
+			width={size}
+		/>
+	);
+};
 
+export const FormInput = ({ ...props }: FormInputProps): JSX.Element => {
+	const {
+		type,
+		field,
+		form: { errors },
+		placeholder,
+		size,
+	} = props;
+
+	const error = getIn(errors, field.name);
 	const isError = error ? true : false;
-	const hasNoMargin = noMargin ? true : false;
 
 	return (
-		<FormStyles.InputContainer noMargin={hasNoMargin}>
-			<FormStyles.Input type={type} error={isError} placeholder={field.name} {...field} />
+		<FormStyles.InputContainer size={size}>
+			<FormStyles.Input type={type} error={isError} placeholder={placeholder} {...field} />
 		</FormStyles.InputContainer>
 	);
 };
