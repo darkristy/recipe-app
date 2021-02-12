@@ -25,7 +25,9 @@ const seed =
 const main = async (): Promise<void> => {
 	await prisma.$connect().catch((e) => console.error(e));
 
-	await Promise.all([...seed]).catch((e) => console.error(e));
+	await Promise.all([cuisineSeeder(prisma), measurmentUnitSeeder(prisma), ingredientSeeder(prisma)]).catch((e) =>
+		console.error(e)
+	);
 };
 
 main()

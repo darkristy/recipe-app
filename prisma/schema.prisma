@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("DEV_DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 generator client {
@@ -85,14 +85,14 @@ model recipe {
   name         String             @unique
   imageUrl     String             @unique
   bookmarked   Boolean            @default(false)
-  cookTime     DateTime
-  prepTime     DateTime
+  cookTime     DateTime?
+  prepTime     DateTime?
   ingredients  recipeIngredient[]
   instructions instruction[]
-  cuisine      cuisine            @relation(fields: [cuisineId], references: [id])
-  user         user               @relation(fields: [userId], references: [id])
-  userId       String
-  cuisineId    Int
+  cuisine      cuisine?           @relation(fields: [cuisineId], references: [id])
+  user         user?              @relation(fields: [userId], references: [id])
+  userId       String?
+  cuisineId    Int?
   createdAt    DateTime           @default(now())
   updatedAt    DateTime           @default(now())
   deletedAt    DateTime           @default(now())
