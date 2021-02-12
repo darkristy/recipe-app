@@ -1,15 +1,18 @@
 import { useMutation } from "@apollo/client";
-import { useFormik } from "formik";
+import { useFormik, FormikProvider, Field } from "formik";
 import { motion } from "framer-motion";
 import * as yup from "yup";
 import { NextPage } from "next";
 import styled from "@emotion/styled";
 
+import { Wrapper } from "../styles/globals";
 import { RegisterMutation } from "../graphql/queries/authQueries";
 import { RegisterUser, RegisterUserVariables } from "../generated/RegisterUser";
 import Form, { FormInput } from "../components/Form";
 import { withApollo } from "../lib/withApollo";
 import Button from "../components/Button";
+import { Mixins } from "../styles/mixins";
+import Alert from "../components/Alert";
 
 interface FormInputs {
 	email: string;
@@ -25,7 +28,7 @@ const RegisterScreenStyles = {
 const RegisterScreen: NextPage = () => {
 	const [submitUser, { data, error }] = useMutation<RegisterUser, RegisterUserVariables>(RegisterMutation);
 
-	const { handleBlur, handleSubmit, handleChange, errors, values, touched } = useFormik({
+	const formik = useFormik({
 		initialValues: {
 			email: "",
 			username: "",
@@ -52,7 +55,11 @@ const RegisterScreen: NextPage = () => {
 	}
 
 	let errorMessage;
-	const inputTouchedAndError = (touched.email && errors.email) || (touched.password && errors.password);
+	const inputTouchedAndError =
+		(formik.touched.email && formik.errors.email) ||
+		(formik.touched.username && formik.errors.username) ||
+		(formik.touched.password && formik.errors.password);
+
 	const errorIndicator = error || inputTouchedAndError;
 
 	if (error) {
@@ -60,52 +67,42 @@ const RegisterScreen: NextPage = () => {
 		console.log(errorMessage);
 	}
 
-	if (touched.email && errors.email) {
-		errorMessage = errors.email;
-		console.log(errors.email);
+	if (formik.touched.email && formik.errors.email) {
+		errorMessage = formik.errors.email;
+		console.log(formik.errors.email);
 	}
 
-	if (touched.password && errors.password) {
-		errorMessage = errors.password;
-		console.log(errors.password);
+	if (formik.touched.username && formik.errors.username) {
+		errorMessage = formik.errors.username;
+		console.log(formik.errors.username);
+	}
+
+	if (formik.touched.password && formik.errors.password) {
+		errorMessage = formik.errors.password;
+		console.log(formik.errors.password);
 	}
 
 	return (
 		<motion.div exit={{ opacity: 0 }}>
 			<RegisterScreenStyles.TopSection />
 			<RegisterScreenStyles.BottomSection>
-				<Form handleSubmit={handleSubmit}>
-					<FormInput
-						type="text"
-						name="email"
-						onChange={handleChange}
-						touched={touched.email}
-						value={values.email}
-						error={errors.email}
-						onBlur={handleBlur}
-					/>
+				<Wrapper>
+					<FormikProvider value={formik}>
+						<Form handleSubmit={formik.handleSubmit}>
+							<Field name="email" component={FormInput} />
+							<Mixins.Spacer height="20px" />
+							<Field name="username" component={FormInput} />
+							<Mixins.Spacer height="20px" />
+							<Field name="password" component={FormInput} />
+							<Mixins.Spacer height="42px" />
+							<Button type="submit" label="Signup" size="full" primary />
+						</Form>
+					</FormikProvider>
 
-					<FormInput
-						type="text"
-						name="username"
-						onChange={handleChange}
-						touched={touched.username}
-						value={values.username}
-						error={errors.username}
-						onBlur={handleBlur}
-					/>
-
-					<FormInput
-						type="password"
-						name="password"
-						onChange={handleChange}
-						touched={touched.password}
-						value={values.password}
-						error={errors.password}
-						onBlur={handleBlur}
-					/>
-					<Button type="submit" label="Signup" size="full" primary />
-				</Form>
+					<Mixins.Flex center style={{ paddingTop: 26 }}>
+						{errorIndicator && <Alert message={errorMessage} severity="error" />}
+					</Mixins.Flex>
+				</Wrapper>
 			</RegisterScreenStyles.BottomSection>
 		</motion.div>
 	);
