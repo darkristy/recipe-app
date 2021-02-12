@@ -13,6 +13,7 @@ import { withApollo } from "../lib/withApollo";
 import Button from "../components/Button";
 import { Mixins } from "../styles/mixins";
 import Alert from "../components/Alert";
+import { Sublink } from "../shared/UIElements";
 
 interface FormInputs {
 	email: string;
@@ -89,13 +90,16 @@ const RegisterScreen: NextPage = () => {
 				<Wrapper>
 					<FormikProvider value={formik}>
 						<Form handleSubmit={formik.handleSubmit}>
-							<Field name="email" component={FormInput} />
+							<Field name="email" component={FormInput} placeholder="email" />
 							<Mixins.Spacer height="20px" />
-							<Field name="username" component={FormInput} />
+							<Field name="username" component={FormInput} placeholder="username" />
 							<Mixins.Spacer height="20px" />
-							<Field name="password" component={FormInput} />
+							<Field name="password" component={FormInput} placeholder="password" />
 							<Mixins.Spacer height="42px" />
 							<Button type="submit" label="Signup" size="full" primary />
+							<Mixins.Flex center style={{ paddingTop: 26 }}>
+								<Sublink href="/login" unlinkedText="Already have an account? " linkedText="Login." />
+							</Mixins.Flex>
 						</Form>
 					</FormikProvider>
 
