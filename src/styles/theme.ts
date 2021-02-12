@@ -5,6 +5,7 @@ const light = {
 	secondary: colors.lightSecondary,
 	tiertiary: colors.lightTertiary,
 	quaternary: colors.lightQuaternary,
+	quinary: colors.lightQuinary,
 	accent: colors.accent,
 };
 
@@ -13,6 +14,7 @@ const dark = {
 	secondary: colors.darkSecondary,
 	tiertiary: colors.darkTertiary,
 	quaternary: colors.darkQuaternary,
+	quinary: colors.darkQuinary,
 	accent: colors.accent,
 };
 

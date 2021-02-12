@@ -16,6 +16,7 @@ declare module "@emotion/react" {
 		secondary: string;
 		tiertiary: string;
 		quaternary: string;
+		quinary: string;
 		accent: string;
 	}
 }
