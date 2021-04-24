@@ -6,7 +6,7 @@ application:
 databases:
 - type: "POSTGRESQL"
   name: "recipe_app"
-  version: "12"
+  version: "10"
 routers:
 - name: "main-recipe-app"
   routes:
