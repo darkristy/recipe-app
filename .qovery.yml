@@ -1,0 +1,15 @@
+---
+application:
+  name: "recipe-app"
+  project: "recipe"
+  organization: "QoveryCommunity"
+databases:
+- type: "POSTGRESQL"
+  name: "recipe_app"
+  version: "12"
+routers:
+- name: "main-recipe-app"
+  routes:
+  - application_name: "recipe-app"
+    paths:
+    - "/*"
